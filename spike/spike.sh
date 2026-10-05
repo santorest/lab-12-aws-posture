@@ -11,7 +11,7 @@ ok=""
 for _ in $(seq 1 45); do
   if health=$(curl -sf localhost:4566/_localstack/health); then
     echo "$health"
-    if python3 -c "import json,sys; s=json.loads(sys.argv[1])['services']; sys.exit(0 if all(s.get(k) in ('available','running') for k in ('s3','iam','sts','cloudtrail','ec2','kms')) else 1)" "$health"; then
+    if python3 -c "import json,sys; s=json.loads(sys.argv[1])['services']; sys.exit(0 if all(s.get(k) in ('available','running') for k in ('s3','iam','sts','ec2','kms','logs')) else 1)" "$health"; then
       ok=1; break
     fi
   fi

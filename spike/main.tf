@@ -21,7 +21,6 @@ provider "aws" {
     s3         = "http://localhost:4566"
     iam        = "http://localhost:4566"
     sts        = "http://localhost:4566"
-    cloudtrail = "http://localhost:4566"
     ec2        = "http://localhost:4566"
     kms        = "http://localhost:4566"
     logs       = "http://localhost:4566"
@@ -74,29 +73,7 @@ resource "aws_iam_account_password_policy" "weak" {
   minimum_password_length = 6
 }
 
-# P5 single-region trail without log validation
-resource "aws_s3_bucket" "trail" {
-  bucket        = "acme-cloudtrail-logs"
-  force_destroy = true
-}
-resource "aws_s3_bucket_policy" "trail" {
-  bucket = aws_s3_bucket.trail.id
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      { Effect = "Allow", Principal = { Service = "cloudtrail.amazonaws.com" }, Action = "s3:GetBucketAcl", Resource = aws_s3_bucket.trail.arn },
-      { Effect = "Allow", Principal = { Service = "cloudtrail.amazonaws.com" }, Action = "s3:PutObject", Resource = "${aws_s3_bucket.trail.arn}/*" },
-    ]
-  })
-}
-resource "aws_cloudtrail" "trail" {
-  name                          = "acme-trail"
-  s3_bucket_name                = aws_s3_bucket.trail.id
-  is_multi_region_trail         = false
-  enable_log_file_validation    = false
-  include_global_service_events = false
-  depends_on                    = [aws_s3_bucket_policy.trail]
-}
+# P5 (CloudTrail) left out: not in the LocalStack 4.14.0 community edition.
 
 # P6a open admin ports; P6b default SG allows traffic; P7b VPC without flow logs
 resource "aws_vpc" "main" {
