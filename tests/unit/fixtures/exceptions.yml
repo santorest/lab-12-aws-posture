@@ -1,0 +1,5 @@
+exceptions:
+  - check_id: s3_bucket_server_access_logging_enabled
+    resource_match: acme-cloudtrail-logs
+    reason: access logs of the log bucket would need another bucket, which would need its own logs
+    owner_role: cloud platform team

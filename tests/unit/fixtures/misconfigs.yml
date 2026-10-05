@@ -1,0 +1,14 @@
+planted:
+  - id: P1
+    title: S3 bucket publicly readable
+    cis: "2.1.4"
+    resource_match: acme-public-assets
+    detectors:
+      - {tool: prowler, check_id: s3_bucket_public_access}
+  - id: P6a
+    title: Security group open to the internet on SSH and RDP
+    cis: "5.2"
+    resource_match: acme-legacy-admin
+    detectors:
+      - {tool: prowler, check_id: ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_22}
+      - {tool: postureck, check_id: pc_sg_admin_ports}
