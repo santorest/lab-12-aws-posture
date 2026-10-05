@@ -2,7 +2,7 @@
 # Feasibility spike: LocalStack in CI, Terraform applies every planted flaw, Prowler audits the emulator.
 set -euo pipefail
 cd "$(dirname "$0")"
-image="localstack/localstack:2026.09.0"
+image="localstack/localstack:4.14.0"
 
 echo "::group::LocalStack"
 docker run -d --name localstack -p 4566:4566 -e LOCALSTACK_AUTH_TOKEN="${LOCALSTACK_AUTH_TOKEN:-}" "$image"
