@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+import json
+from collections.abc import Sequence
+from dataclasses import asdict, dataclass
 
 STATUSES = ("PASS", "FAIL", "MANUAL")
 SEVERITIES = ("critical", "high", "medium", "low", "informational")
@@ -28,3 +30,22 @@ class Finding:
     @property
     def key(self) -> tuple[str, str]:
         return (self.check_id, self.resource)
+
+
+def dump_findings(findings: Sequence[Finding]) -> str:
+    return json.dumps([asdict(f) for f in findings], indent=1, sort_keys=True) + "\n"
+
+
+def load_findings(data: bytes) -> list[Finding]:
+    """Findings written by dump_findings (the fallback checks' output)."""
+    try:
+        raw = json.loads(data)
+        if not isinstance(raw, list):
+            raise TypeError("not a list")
+        out = [Finding(**{**r, "cis": tuple(r.get("cis", ())), "labels": tuple(r.get("labels", ()))}) for r in raw]
+    except (ValueError, TypeError, UnicodeDecodeError) as exc:
+        raise AuditError(f"findings file is not valid: {exc}") from exc
+    for f in out:
+        if f.status not in STATUSES:
+            raise AuditError(f"findings file: {f.check_id}: unknown status {f.status!r}")
+    return out

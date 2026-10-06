@@ -1,0 +1,1 @@
+[{"check_id": "pc_iam_user_mfa_keys", "resource": "arn:aws:iam::000000000000:user/svc-deploy", "status": "FAIL", "severity": "high", "title": "User with an active access key has an MFA device", "service": "iam", "region": "us-east-1", "tool": "postureck", "cis": ["2.10"], "labels": []}]

@@ -1,0 +1,4 @@
+framework: CIS-7.0
+services: [s3, iam, ec2, vpc, kms]
+prowler_version: "5.44.0"
+localstack_image: localstack/localstack:4.14.0@sha256:test

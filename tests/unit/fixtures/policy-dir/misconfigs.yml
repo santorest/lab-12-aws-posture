@@ -1,0 +1,19 @@
+planted:
+  - id: P1
+    title: Assets bucket publicly readable
+    cis: "3.1.4"
+    resource_match: acme-public-assets
+    detectors:
+      - {tool: prowler, check_id: s3_bucket_level_public_access_block}
+  - id: P4a
+    title: Long-lived access key on a user without MFA
+    cis: "2.10"
+    resource_match: svc-deploy
+    detectors:
+      - {tool: postureck, check_id: pc_iam_user_mfa_keys}
+  - id: P6a
+    title: SSH open to the internet
+    cis: "6.3"
+    resource_match: acme-legacy-admin
+    detectors:
+      - {tool: prowler, check_id: ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_22}
