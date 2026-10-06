@@ -9,3 +9,4 @@ sg_admin_open             = false
 sg_default_open           = false
 kms_no_rotation           = false
 vpc_no_flow_logs          = false
+extra_public_bucket       = true
