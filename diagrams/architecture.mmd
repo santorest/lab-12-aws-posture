@@ -1,0 +1,14 @@
+flowchart TB
+  LS["LocalStack 4.14.0 (emulated AWS, no token)<br/>baseline inventory"] --> V["terraform apply<br/>envs/vulnerable.tfvars (planted flaws)"]
+  V --> A1["audit before<br/>Prowler 5.44.0 (s3, iam, ec2, vpc, kms)<br/>+ postureck fallback check"]
+  A1 --> R["terraform apply<br/>envs/remediated.tfvars (same state, in place)"]
+  R --> A2["audit after<br/>Prowler + postureck"]
+  A2 --> D["terraform destroy<br/>inventory vs baseline"]
+  POL["policy/misconfigs.yml (planted item -> detectors)<br/>policy/exceptions.yml (reason, owner role)<br/>policy/policy.yml (CIS-7.0, pinned versions)"] --> C
+  A1 --> C["postureck compare<br/>detected, fixed, regressions, open"]
+  A2 --> C
+  D --> C
+  C --> REP["report: HTML, Markdown, JSON<br/>job summary + artifacts"]
+  C --> G{"gate"}
+  G -->|"planted flaw undetected or still failing,<br/>regression, or resources left"| F["CI fails"]
+  G -->|"all checks pass"| P["CI passes"]

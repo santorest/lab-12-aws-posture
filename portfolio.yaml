@@ -1,0 +1,30 @@
+# Metadata used by the portfolio site's `import_lab` command (site repo). Not needed to run the lab.
+slug: aws-posture
+category: cloud-security
+repo_url: https://github.com/santorest/lab-12-aws-posture
+status: in_progress          # design | in_progress | complete
+difficulty: intermediate     # beginner | intermediate | advanced
+featured: true
+# The CI results are real; the AWS account is emulated (LocalStack).
+sample_output_notice: true
+cover: diagrams/architecture.png
+writeup:
+  en: WRITEUP.md
+  es: WRITEUP.es.md
+title:
+  en: "AWS Cloud Security Posture Audit (Emulated)"
+  es: "Auditoría de postura de seguridad en AWS (emulada)"
+summary:
+  en: >-
+    Terraform builds an AWS account on LocalStack with planted misconfigurations; Prowler audits it before and after a
+    Terraform fix, and CI fails if a planted flaw goes undetected or unfixed, a new finding appears or teardown leaves
+    anything behind.
+  es: >-
+    Terraform construye una cuenta de AWS en LocalStack con configuraciones erróneas sembradas; Prowler la audita antes
+    y después de una corrección en Terraform, y CI falla si una falla sembrada no se detecta o no se corrige.
+tools: [AWS, LocalStack, Terraform, Prowler, Checkov, Python, boto3, GitHub Actions]
+mitre_attack: [T1530, T1078.004, T1562.007]
+bundle:
+  title:
+    en: Lab source bundle
+    es: Paquete de fuentes del laboratorio
