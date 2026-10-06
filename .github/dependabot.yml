@@ -1,0 +1,13 @@
+# The LocalStack image (pinned by digest, the last release without an auth token) and Prowler's version live in
+# policy/policy.yml and are changed by hand, with a real audit run.
+version: 2
+updates:
+  - package-ecosystem: pip
+    directory: /
+    schedule: {interval: weekly}
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: {interval: weekly}
+  - package-ecosystem: terraform
+    directory: /terraform
+    schedule: {interval: weekly}
