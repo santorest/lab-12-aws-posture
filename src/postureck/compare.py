@@ -36,14 +36,17 @@ def validate(findings: Sequence[Finding], services: Sequence[str], phase: str) -
         raise AuditError(f"{phase} audit: no finding from any tool for deployed service(s) {', '.join(missing)}")
 
 
+def _named(f: Finding, match: str) -> bool:
+    # resources with random ids (security groups, VPCs, keys) are matched by their Name tag label
+    return match in f.resource or any(match in label for label in f.labels)
+
+
 def _matches(f: Finding, item: Planted) -> bool:
-    return any(d.tool == f.tool and d.check_id == f.check_id for d in item.detectors) and (
-        item.resource_match in f.resource
-    )
+    return _named(f, item.resource_match) and any(d.tool == f.tool and d.check_id == f.check_id for d in item.detectors)
 
 
 def _covered(f: Finding, exceptions: Sequence[Exception_]) -> bool:
-    return any(e.check_id == f.check_id and e.resource_match in f.resource for e in exceptions)
+    return any(e.check_id == f.check_id and _named(f, e.resource_match) for e in exceptions)
 
 
 def _item(item: Planted, before: Sequence[Finding], after: Sequence[Finding], exc: Sequence[Exception_]) -> ItemResult:

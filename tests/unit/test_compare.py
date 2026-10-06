@@ -123,3 +123,33 @@ def test_empty_audit_is_an_error():
 
 def test_validate_passes_with_every_service():
     validate([f("s3_public", BUCKET_ARN, service="s3"), f("x", "u", service="iam")], ["s3", "iam"], "after")
+
+
+def test_planted_item_matches_by_name_label():
+    # security groups, VPCs and keys have random ids; Prowler shows their Name tag as a label
+    sg_arn = "arn:aws:ec2:us-east-1:000000000000:security-group/sg-0d1d"
+    tagged = Finding(
+        "sg_ssh_open", sg_arn, "FAIL", "high", "t", "ec2", "us-east-1", "prowler", (), ("Name:acme-legacy-admin",)
+    )
+    other = Finding(
+        "sg_ssh_open", sg_arn + "x", "FAIL", "high", "t", "ec2", "us-east-1", "prowler", (), ("Name:other",)
+    )
+    assert compare([tagged], [], [SG], []).items[0].detected is True
+    assert compare([other], [], [SG], []).items[0].detected is False
+
+
+def test_exception_matches_by_name_label():
+    exc = Exception_("vpc_endpoint", "acme-vpc", "no private endpoints in a lab VPC", "platform")
+    vpc = Finding(
+        "vpc_endpoint",
+        "arn:aws:ec2:us-east-1:0:vpc/vpc-1",
+        "FAIL",
+        "low",
+        "t",
+        "vpc",
+        "us-east-1",
+        "prowler",
+        (),
+        ("Name:acme-vpc",),
+    )
+    assert compare([], [vpc], [], [exc]).regressions == ()

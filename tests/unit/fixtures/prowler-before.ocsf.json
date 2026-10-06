@@ -1,0 +1,941 @@
+[
+ {
+  "metadata": {
+   "event_code": "s3_bucket_level_public_access_block",
+   "product": {
+    "name": "Prowler",
+    "uid": "prowler",
+    "vendor_name": "Prowler",
+    "version": "5.44.0"
+   },
+   "profiles": [
+    "cloud",
+    "datetime"
+   ],
+   "tenant_uid": "",
+   "version": "1.5.0"
+  },
+  "severity_id": 4,
+  "severity": "High",
+  "status": "New",
+  "status_code": "FAIL",
+  "status_id": 1,
+  "unmapped": {
+   "compliance": {
+    "CIS-7.0": [
+     "3.1.4"
+    ]
+   }
+  },
+  "activity_name": "Create",
+  "activity_id": 1,
+  "finding_info": {
+   "analytic": {
+    "category": "s3",
+    "name": "S3 bucket has Block Public Access with IgnorePublicAcls and RestrictPublicBuckets enabled at bucket or account level",
+    "type": "Rule",
+    "type_id": 1,
+    "uid": "s3_bucket_level_public_access_block"
+   },
+   "created_time": 1791259549,
+   "created_time_dt": "2026-10-06T04:05:49.157151",
+   "desc": "**Amazon S3 buckets** are evaluated for **Block Public Access** settings, ensuring `ignore_public_acls` and `restrict_public_buckets` are enabled at the bucket or account scope.\n\n*Account-wide protections, when present, are treated as effective for the bucket.*",
+   "attacks": [
+    {
+     "tactic": {
+      "name": "Collection"
+     },
+     "technique": {
+      "name": "Data from Cloud Storage",
+      "src_url": "https://attack.mitre.org/techniques/T1530/",
+      "uid": "T1530"
+     }
+    }
+   ],
+   "title": "S3 bucket has Block Public Access with IgnorePublicAcls and RestrictPublicBuckets enabled at bucket or account level",
+   "types": [
+    "Software and Configuration Checks/AWS Security Best Practices/Network Reachability",
+    "Software and Configuration Checks/Industry and Regulatory Standards/AWS Foundational Security Best Practices",
+    "Software and Configuration Checks/Industry and Regulatory Standards/CIS AWS Foundations Benchmark",
+    "Effects/Data Exposure"
+   ],
+   "uid": "prowler-aws-s3_bucket_level_public_access_block-000000000000-us-east-1-acme-public-assets"
+  },
+  "resources": [
+   {
+    "cloud_partition": "aws",
+    "region": "us-east-1",
+    "group": {
+     "name": "s3"
+    },
+    "labels": [],
+    "name": "acme-public-assets",
+    "type": "AwsS3Bucket",
+    "uid": "arn:aws:s3:::acme-public-assets"
+   }
+  ],
+  "category_name": "Findings",
+  "category_uid": 2,
+  "class_name": "Detection Finding",
+  "class_uid": 2004,
+  "cloud": {
+   "account": {
+    "name": "",
+    "type": "AWS Account",
+    "type_id": 10,
+    "uid": "000000000000",
+    "labels": []
+   },
+   "org": {
+    "name": "",
+    "ou_uid": "",
+    "ou_name": "",
+    "uid": ""
+   },
+   "provider": "aws",
+   "region": "us-east-1"
+  },
+  "time": 1791259549,
+  "time_dt": "2026-10-06T04:05:49.157151",
+  "type_uid": 200401,
+  "type_name": "Detection Finding: Create"
+ },
+ {
+  "metadata": {
+   "event_code": "s3_bucket_secure_transport_policy",
+   "product": {
+    "name": "Prowler",
+    "uid": "prowler",
+    "vendor_name": "Prowler",
+    "version": "5.44.0"
+   },
+   "profiles": [
+    "cloud",
+    "datetime"
+   ],
+   "tenant_uid": "",
+   "version": "1.5.0"
+  },
+  "severity_id": 3,
+  "severity": "Medium",
+  "status": "New",
+  "status_code": "FAIL",
+  "status_id": 1,
+  "unmapped": {
+   "compliance": {
+    "CIS-7.0": [
+     "3.1.1"
+    ]
+   }
+  },
+  "activity_name": "Create",
+  "activity_id": 1,
+  "finding_info": {
+   "analytic": {
+    "category": "s3",
+    "name": "S3 bucket policy denies requests over insecure transport",
+    "type": "Rule",
+    "type_id": 1,
+    "uid": "s3_bucket_secure_transport_policy"
+   },
+   "created_time": 1791259549,
+   "created_time_dt": "2026-10-06T04:05:49.157151",
+   "desc": "**Amazon S3 buckets** are evaluated for a bucket policy that enforces **secure transport** by denying requests when `aws:SecureTransport` is `false`.\n\nBuckets without this explicit denial, or without a policy, are treated as allowing access over insecure transport.",
+   "attacks": [
+    {
+     "tactic": {
+      "name": "Credential Access"
+     },
+     "technique": {
+      "name": "Network Sniffing",
+      "src_url": "https://attack.mitre.org/techniques/T1040/",
+      "uid": "T1040"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Discovery"
+     },
+     "technique": {
+      "name": "Network Sniffing",
+      "src_url": "https://attack.mitre.org/techniques/T1040/",
+      "uid": "T1040"
+     }
+    }
+   ],
+   "title": "<script>x</script> | pipe",
+   "types": [
+    "Software and Configuration Checks/AWS Security Best Practices/Network Reachability",
+    "Software and Configuration Checks/Industry and Regulatory Standards/AWS Foundational Security Best Practices",
+    "Software and Configuration Checks/Industry and Regulatory Standards/CIS AWS Foundations Benchmark"
+   ],
+   "uid": "prowler-aws-s3_bucket_secure_transport_policy-000000000000-us-east-1-acme-customer-data"
+  },
+  "resources": [
+   {
+    "cloud_partition": "aws",
+    "region": "us-east-1",
+    "group": {
+     "name": "s3"
+    },
+    "labels": [],
+    "name": "acme-customer-data",
+    "type": "AwsS3Bucket",
+    "uid": "arn:aws:s3:::acme-customer-data"
+   }
+  ],
+  "category_name": "Findings",
+  "category_uid": 2,
+  "class_name": "Detection Finding",
+  "class_uid": 2004,
+  "cloud": {
+   "account": {
+    "name": "",
+    "type": "AWS Account",
+    "type_id": 10,
+    "uid": "000000000000",
+    "labels": []
+   },
+   "org": {
+    "name": "",
+    "ou_uid": "",
+    "ou_name": "",
+    "uid": ""
+   },
+   "provider": "aws",
+   "region": "us-east-1"
+  },
+  "time": 1791259549,
+  "time_dt": "2026-10-06T04:05:49.157151",
+  "type_uid": 200401,
+  "type_name": "Detection Finding: Create"
+ },
+ {
+  "metadata": {
+   "event_code": "iam_customer_attached_policy_no_administrative_privileges",
+   "product": {
+    "name": "Prowler",
+    "uid": "prowler",
+    "vendor_name": "Prowler",
+    "version": "5.44.0"
+   },
+   "profiles": [
+    "cloud",
+    "datetime"
+   ],
+   "tenant_uid": "",
+   "version": "1.5.0"
+  },
+  "severity_id": 4,
+  "severity": "High",
+  "status": "New",
+  "status_code": "FAIL",
+  "status_id": 1,
+  "unmapped": {
+   "compliance": {
+    "CIS-7.0": [
+     "2.14"
+    ]
+   }
+  },
+  "activity_name": "Create",
+  "activity_id": 1,
+  "finding_info": {
+   "analytic": {
+    "category": "iam",
+    "name": "Attached IAM customer-managed policy does not allow '*:*' administrative privileges",
+    "type": "Rule",
+    "type_id": 1,
+    "uid": "iam_customer_attached_policy_no_administrative_privileges"
+   },
+   "created_time": 1791259549,
+   "created_time_dt": "2026-10-06T04:05:49.157151",
+   "desc": "Attached **customer-managed IAM policies** are evaluated for statements granting full admin access via `Action: \"*\"`, `Resource: \"*\"`, i.e., `*:*`. Only policies you created and attached to identities are considered.",
+   "attacks": [
+    {
+     "tactic": {
+      "name": "Defense Evasion"
+     },
+     "technique": {
+      "name": "Valid Accounts",
+      "src_url": "https://attack.mitre.org/techniques/T1078/",
+      "uid": "T1078"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Persistence"
+     },
+     "technique": {
+      "name": "Valid Accounts",
+      "src_url": "https://attack.mitre.org/techniques/T1078/",
+      "uid": "T1078"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Privilege Escalation"
+     },
+     "technique": {
+      "name": "Valid Accounts",
+      "src_url": "https://attack.mitre.org/techniques/T1078/",
+      "uid": "T1078"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Initial Access"
+     },
+     "technique": {
+      "name": "Valid Accounts",
+      "src_url": "https://attack.mitre.org/techniques/T1078/",
+      "uid": "T1078"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Execution"
+     },
+     "technique": {
+      "name": "Serverless Execution",
+      "src_url": "https://attack.mitre.org/techniques/T1648/",
+      "uid": "T1648"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Persistence"
+     },
+     "technique": {
+      "name": "Account Manipulation",
+      "src_url": "https://attack.mitre.org/techniques/T1098/",
+      "uid": "T1098"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Defense Evasion"
+     },
+     "technique": {
+      "name": "Modify Cloud Compute Infrastructure",
+      "src_url": "https://attack.mitre.org/techniques/T1578/",
+      "uid": "T1578"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Defense Evasion"
+     },
+     "technique": {
+      "name": "Use Alternate Authentication Material",
+      "src_url": "https://attack.mitre.org/techniques/T1550/",
+      "uid": "T1550"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Lateral Movement"
+     },
+     "technique": {
+      "name": "Use Alternate Authentication Material",
+      "src_url": "https://attack.mitre.org/techniques/T1550/",
+      "uid": "T1550"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Credential Access"
+     },
+     "technique": {
+      "name": "Network Sniffing",
+      "src_url": "https://attack.mitre.org/techniques/T1040/",
+      "uid": "T1040"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Discovery"
+     },
+     "technique": {
+      "name": "Network Sniffing",
+      "src_url": "https://attack.mitre.org/techniques/T1040/",
+      "uid": "T1040"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Discovery"
+     },
+     "technique": {
+      "name": "Cloud Infrastructure Discovery",
+      "src_url": "https://attack.mitre.org/techniques/T1580/",
+      "uid": "T1580"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Discovery"
+     },
+     "technique": {
+      "name": "Cloud Service Dashboard",
+      "src_url": "https://attack.mitre.org/techniques/T1538/",
+      "uid": "T1538"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Discovery"
+     },
+     "technique": {
+      "name": "Cloud Storage Object Discovery",
+      "src_url": "https://attack.mitre.org/techniques/T1619/",
+      "uid": "T1619"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Discovery"
+     },
+     "technique": {
+      "name": "Password Policy Discovery",
+      "src_url": "https://attack.mitre.org/techniques/T1201/",
+      "uid": "T1201"
+     }
+    }
+   ],
+   "title": "Attached IAM customer-managed policy does not allow '*:*' administrative privileges",
+   "types": [
+    "Software and Configuration Checks/AWS Security Best Practices",
+    "Software and Configuration Checks/Industry and Regulatory Standards/AWS Foundational Security Best Practices",
+    "Software and Configuration Checks/Industry and Regulatory Standards/CIS AWS Foundations Benchmark",
+    "TTPs/Privilege Escalation"
+   ],
+   "uid": "prowler-aws-iam_customer_attached_policy_no_administrative_privileges-000000000000-us-east-1-acme-admin-policy"
+  },
+  "resources": [
+   {
+    "cloud_partition": "aws",
+    "region": "us-east-1",
+    "group": {
+     "name": "iam"
+    },
+    "labels": [],
+    "name": "acme-admin-policy",
+    "type": "AwsIamPolicy",
+    "uid": "arn:aws:iam::000000000000:policy/acme-admin-policy"
+   }
+  ],
+  "category_name": "Findings",
+  "category_uid": 2,
+  "class_name": "Detection Finding",
+  "class_uid": 2004,
+  "cloud": {
+   "account": {
+    "name": "",
+    "type": "AWS Account",
+    "type_id": 10,
+    "uid": "000000000000",
+    "labels": []
+   },
+   "org": {
+    "name": "",
+    "ou_uid": "",
+    "ou_name": "",
+    "uid": ""
+   },
+   "provider": "aws",
+   "region": "us-east-1"
+  },
+  "time": 1791259549,
+  "time_dt": "2026-10-06T04:05:49.157151",
+  "type_uid": 200401,
+  "type_name": "Detection Finding: Create"
+ },
+ {
+  "metadata": {
+   "event_code": "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_22",
+   "product": {
+    "name": "Prowler",
+    "uid": "prowler",
+    "vendor_name": "Prowler",
+    "version": "5.44.0"
+   },
+   "profiles": [
+    "cloud",
+    "datetime"
+   ],
+   "tenant_uid": "",
+   "version": "1.5.0"
+  },
+  "severity_id": 4,
+  "severity": "High",
+  "status": "New",
+  "status_code": "FAIL",
+  "status_id": 1,
+  "unmapped": {
+   "compliance": {
+    "CIS-7.0": [
+     "6.3",
+     "6.4"
+    ]
+   }
+  },
+  "activity_name": "Create",
+  "activity_id": 1,
+  "finding_info": {
+   "analytic": {
+    "category": "ec2",
+    "name": "Security group does not allow ingress from 0.0.0.0/0 or ::/0 to TCP port 22 (SSH)",
+    "type": "Rule",
+    "type_id": 1,
+    "uid": "ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_22"
+   },
+   "created_time": 1791259549,
+   "created_time_dt": "2026-10-06T04:05:49.157151",
+   "desc": "**EC2 security groups** are assessed for **inbound SSH exposure** by locating ingress rules that allow `TCP 22` from the Internet (`0.0.0.0/0` or `::/0`).\n\nOnly groups in use are considered; sets already flagged for all-port exposure are not repeated.",
+   "attacks": [
+    {
+     "tactic": {
+      "name": "Initial Access"
+     },
+     "technique": {
+      "name": "Trusted Relationship",
+      "src_url": "https://attack.mitre.org/techniques/T1199/",
+      "uid": "T1199"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Exfiltration"
+     },
+     "technique": {
+      "name": "Exfiltration Over Alternative Protocol",
+      "src_url": "https://attack.mitre.org/techniques/T1048/",
+      "uid": "T1048"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Impact"
+     },
+     "technique": {
+      "name": "Endpoint Denial of Service",
+      "src_url": "https://attack.mitre.org/techniques/T1499/",
+      "uid": "T1499"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Impact"
+     },
+     "technique": {
+      "name": "Network Denial of Service",
+      "src_url": "https://attack.mitre.org/techniques/T1498/",
+      "uid": "T1498"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Discovery"
+     },
+     "technique": {
+      "name": "Network Service Discovery",
+      "src_url": "https://attack.mitre.org/techniques/T1046/",
+      "uid": "T1046"
+     }
+    }
+   ],
+   "title": "Security group does not allow ingress from 0.0.0.0/0 or ::/0 to TCP port 22 (SSH)",
+   "types": [
+    "Software and Configuration Checks/AWS Security Best Practices/Network Reachability",
+    "Software and Configuration Checks/Industry and Regulatory Standards/AWS Foundational Security Best Practices",
+    "Software and Configuration Checks/Industry and Regulatory Standards/CIS AWS Foundations Benchmark",
+    "TTPs/Initial Access/Unauthorized Access"
+   ],
+   "uid": "prowler-aws-ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_22-000000000000-us-east-1-sg-0d1df3e5bafea9855"
+  },
+  "resources": [
+   {
+    "cloud_partition": "aws",
+    "region": "us-east-1",
+    "group": {
+     "name": "ec2"
+    },
+    "labels": [
+     "Name:acme-legacy-admin"
+    ],
+    "name": "sg-0d1df3e5bafea9855",
+    "type": "AwsEc2SecurityGroup",
+    "uid": "arn:aws:ec2:us-east-1:000000000000:security-group/sg-0d1df3e5bafea9855"
+   }
+  ],
+  "category_name": "Findings",
+  "category_uid": 2,
+  "class_name": "Detection Finding",
+  "class_uid": 2004,
+  "cloud": {
+   "account": {
+    "name": "",
+    "type": "AWS Account",
+    "type_id": 10,
+    "uid": "000000000000",
+    "labels": []
+   },
+   "org": {
+    "name": "",
+    "ou_uid": "",
+    "ou_name": "",
+    "uid": ""
+   },
+   "provider": "aws",
+   "region": "us-east-1"
+  },
+  "time": 1791259549,
+  "time_dt": "2026-10-06T04:05:49.157151",
+  "type_uid": 200401,
+  "type_name": "Detection Finding: Create"
+ },
+ {
+  "metadata": {
+   "event_code": "vpc_flow_logs_enabled",
+   "product": {
+    "name": "Prowler",
+    "uid": "prowler",
+    "vendor_name": "Prowler",
+    "version": "5.44.0"
+   },
+   "profiles": [
+    "cloud",
+    "datetime"
+   ],
+   "tenant_uid": "",
+   "version": "1.5.0"
+  },
+  "severity_id": 3,
+  "severity": "Medium",
+  "status": "New",
+  "status_code": "FAIL",
+  "status_id": 1,
+  "unmapped": {
+   "compliance": {
+    "CIS-7.0": [
+     "4.7"
+    ]
+   }
+  },
+  "activity_name": "Create",
+  "activity_id": 1,
+  "finding_info": {
+   "analytic": {
+    "category": "vpc",
+    "name": "VPC flow logs are enabled",
+    "type": "Rule",
+    "type_id": 1,
+    "uid": "vpc_flow_logs_enabled"
+   },
+   "created_time": 1791259549,
+   "created_time_dt": "2026-10-06T04:05:49.157151",
+   "desc": "**AWS VPCs** have **Flow Logs** configured to capture IP traffic for their network interfaces and deliver records to a logging destination.\n\nVPCs lacking an active flow log configuration are highlighted.",
+   "title": "VPC flow logs are enabled",
+   "types": [
+    "Software and Configuration Checks/AWS Security Best Practices",
+    "Software and Configuration Checks/Industry and Regulatory Standards/AWS Foundational Security Best Practices",
+    "Software and Configuration Checks/Industry and Regulatory Standards/CIS AWS Foundations Benchmark",
+    "Software and Configuration Checks/Industry and Regulatory Standards/PCI-DSS",
+    "Software and Configuration Checks/Industry and Regulatory Standards/NIST 800-53 Controls (USA)",
+    "Software and Configuration Checks/Industry and Regulatory Standards/NIST CSF Controls (USA)"
+   ],
+   "uid": "prowler-aws-vpc_flow_logs_enabled-000000000000-us-east-1-vpc-3a70a010399612519"
+  },
+  "resources": [
+   {
+    "cloud_partition": "aws",
+    "region": "us-east-1",
+    "group": {
+     "name": "vpc"
+    },
+    "labels": [
+     "Name:acme-vpc"
+    ],
+    "name": "vpc-3a70a010399612519",
+    "type": "AwsEc2Vpc",
+    "uid": "arn:aws:ec2:us-east-1:000000000000:vpc/vpc-3a70a010399612519"
+   }
+  ],
+  "category_name": "Findings",
+  "category_uid": 2,
+  "class_name": "Detection Finding",
+  "class_uid": 2004,
+  "cloud": {
+   "account": {
+    "name": "",
+    "type": "AWS Account",
+    "type_id": 10,
+    "uid": "000000000000",
+    "labels": []
+   },
+   "org": {
+    "name": "",
+    "ou_uid": "",
+    "ou_name": "",
+    "uid": ""
+   },
+   "provider": "aws",
+   "region": "us-east-1"
+  },
+  "time": 1791259549,
+  "time_dt": "2026-10-06T04:05:49.157151",
+  "type_uid": 200401,
+  "type_name": "Detection Finding: Create"
+ },
+ {
+  "metadata": {
+   "event_code": "kms_cmk_rotation_enabled",
+   "product": {
+    "name": "Prowler",
+    "uid": "prowler",
+    "vendor_name": "Prowler",
+    "version": "5.44.0"
+   },
+   "profiles": [
+    "cloud",
+    "datetime"
+   ],
+   "tenant_uid": "",
+   "version": "1.5.0"
+  },
+  "severity_id": 4,
+  "severity": "High",
+  "status": "New",
+  "status_code": "FAIL",
+  "status_id": 1,
+  "unmapped": {
+   "compliance": {
+    "CIS-7.0": [
+     "4.6"
+    ]
+   }
+  },
+  "activity_name": "Create",
+  "activity_id": 1,
+  "finding_info": {
+   "analytic": {
+    "category": "kms",
+    "name": "KMS customer-managed symmetric CMK has automatic rotation enabled",
+    "type": "Rule",
+    "type_id": 1,
+    "uid": "kms_cmk_rotation_enabled"
+   },
+   "created_time": 1791259549,
+   "created_time_dt": "2026-10-06T04:05:49.157151",
+   "desc": "**Customer-managed KMS symmetric keys** in the `Enabled` state are evaluated to confirm `automatic rotation` of key material is configured",
+   "title": "KMS customer-managed symmetric CMK has automatic rotation enabled",
+   "types": [
+    "Software and Configuration Checks/AWS Security Best Practices",
+    "Software and Configuration Checks/Industry and Regulatory Standards/AWS Foundational Security Best Practices",
+    "Software and Configuration Checks/Industry and Regulatory Standards/CIS AWS Foundations Benchmark"
+   ],
+   "uid": "prowler-aws-kms_cmk_rotation_enabled-000000000000-us-east-1-d9b594df-06fe-4717-9ae3-baf8e6c5973f"
+  },
+  "resources": [
+   {
+    "cloud_partition": "aws",
+    "region": "us-east-1",
+    "group": {
+     "name": "kms"
+    },
+    "labels": [
+     "Name:acme-data"
+    ],
+    "name": "d9b594df-06fe-4717-9ae3-baf8e6c5973f",
+    "type": "AwsKmsKey",
+    "uid": "arn:aws:kms:us-east-1:000000000000:key/d9b594df-06fe-4717-9ae3-baf8e6c5973f"
+   }
+  ],
+  "category_name": "Findings",
+  "category_uid": 2,
+  "class_name": "Detection Finding",
+  "class_uid": 2004,
+  "cloud": {
+   "account": {
+    "name": "",
+    "type": "AWS Account",
+    "type_id": 10,
+    "uid": "000000000000",
+    "labels": []
+   },
+   "org": {
+    "name": "",
+    "ou_uid": "",
+    "ou_name": "",
+    "uid": ""
+   },
+   "provider": "aws",
+   "region": "us-east-1"
+  },
+  "time": 1791259549,
+  "time_dt": "2026-10-06T04:05:49.157151",
+  "type_uid": 200401,
+  "type_name": "Detection Finding: Create"
+ },
+ {
+  "metadata": {
+   "event_code": "iam_user_accesskey_unused",
+   "product": {
+    "name": "Prowler",
+    "uid": "prowler",
+    "vendor_name": "Prowler",
+    "version": "5.44.0"
+   },
+   "profiles": [
+    "cloud",
+    "datetime"
+   ],
+   "tenant_uid": "",
+   "version": "1.5.0"
+  },
+  "severity_id": 3,
+  "severity": "Medium",
+  "status": "New",
+  "status_code": "PASS",
+  "status_id": 1,
+  "unmapped": {
+   "compliance": {
+    "CIS-7.0": [
+     "2.11"
+    ]
+   }
+  },
+  "activity_name": "Create",
+  "activity_id": 1,
+  "finding_info": {
+   "analytic": {
+    "category": "iam",
+    "name": "IAM user does not have unused access keys older than 45 days",
+    "type": "Rule",
+    "type_id": 1,
+    "uid": "iam_user_accesskey_unused"
+   },
+   "created_time": 1791259549,
+   "created_time_dt": "2026-10-06T04:05:49.157151",
+   "desc": "**IAM users** are evaluated for **active access keys** whose `last-used` timestamp exceeds `max_unused_access_keys_days` (default `45`). Users without access keys, or whose keys were used within this window, are reported separately.",
+   "attacks": [
+    {
+     "tactic": {
+      "name": "Defense Evasion"
+     },
+     "technique": {
+      "name": "Valid Accounts",
+      "src_url": "https://attack.mitre.org/techniques/T1078/",
+      "uid": "T1078"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Persistence"
+     },
+     "technique": {
+      "name": "Valid Accounts",
+      "src_url": "https://attack.mitre.org/techniques/T1078/",
+      "uid": "T1078"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Privilege Escalation"
+     },
+     "technique": {
+      "name": "Valid Accounts",
+      "src_url": "https://attack.mitre.org/techniques/T1078/",
+      "uid": "T1078"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Initial Access"
+     },
+     "technique": {
+      "name": "Valid Accounts",
+      "src_url": "https://attack.mitre.org/techniques/T1078/",
+      "uid": "T1078"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Defense Evasion"
+     },
+     "technique": {
+      "name": "Use Alternate Authentication Material",
+      "src_url": "https://attack.mitre.org/techniques/T1550/",
+      "uid": "T1550"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Lateral Movement"
+     },
+     "technique": {
+      "name": "Use Alternate Authentication Material",
+      "src_url": "https://attack.mitre.org/techniques/T1550/",
+      "uid": "T1550"
+     }
+    },
+    {
+     "tactic": {
+      "name": "Credential Access"
+     },
+     "technique": {
+      "name": "Brute Force",
+      "src_url": "https://attack.mitre.org/techniques/T1110/",
+      "uid": "T1110"
+     }
+    }
+   ],
+   "title": "IAM user does not have unused access keys older than 45 days",
+   "types": [
+    "Software and Configuration Checks/AWS Security Best Practices",
+    "Software and Configuration Checks/Industry and Regulatory Standards/AWS Foundational Security Best Practices",
+    "Software and Configuration Checks/Industry and Regulatory Standards/CIS AWS Foundations Benchmark"
+   ],
+   "uid": "prowler-aws-iam_user_accesskey_unused-000000000000-us-east-1-svc-deploy"
+  },
+  "resources": [
+   {
+    "cloud_partition": "aws",
+    "region": "us-east-1",
+    "group": {
+     "name": "iam"
+    },
+    "labels": [],
+    "name": "svc-deploy",
+    "type": "AwsIamUser",
+    "uid": "arn:aws:iam::000000000000:user/svc-deploy"
+   }
+  ],
+  "category_name": "Findings",
+  "category_uid": 2,
+  "class_name": "Detection Finding",
+  "class_uid": 2004,
+  "cloud": {
+   "account": {
+    "name": "",
+    "type": "AWS Account",
+    "type_id": 10,
+    "uid": "000000000000",
+    "labels": []
+   },
+   "org": {
+    "name": "",
+    "ou_uid": "",
+    "ou_name": "",
+    "uid": ""
+   },
+   "provider": "aws",
+   "region": "us-east-1"
+  },
+  "time": 1791259549,
+  "time_dt": "2026-10-06T04:05:49.157151",
+  "type_uid": 200401,
+  "type_name": "Detection Finding: Create"
+ }
+]

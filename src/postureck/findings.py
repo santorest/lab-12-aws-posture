@@ -23,6 +23,7 @@ class Finding:
     region: str
     tool: str
     cis: tuple[str, ...]
+    labels: tuple[str, ...] = ()  # resource tags as "Key:Value" (Prowler OCSF labels)
 
     @property
     def key(self) -> tuple[str, str]:
