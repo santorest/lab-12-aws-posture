@@ -33,7 +33,7 @@ export AWS_ENDPOINT_URL=http://localhost:4566 AWS_ACCESS_KEY_ID=test AWS_SECRET_
 start=$(date +%s)
 rc=0
 ../.venv-prowler/bin/prowler aws --region us-east-1 --output-formats json-ocsf --output-directory ../out \
-  --compliance cis_7.0_aws --ignore-exit-code-3 > ../out-prowler.log 2>&1 || rc=$?
+  --services s3 iam ec2 vpc kms cloudtrail --scan-unused-services --ignore-exit-code-3 > ../out-prowler.log 2>&1 || rc=$?
 echo "prowler exit $rc after $(( $(date +%s) - start )) s"
 tail -60 ../out-prowler.log
 echo "::endgroup::"

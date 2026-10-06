@@ -19,6 +19,10 @@ for r in records:
 for service in sorted(per_service):
     print(f"{service}: {dict(per_service[service])} checks={len(checks[service])}")
 
+for r in records:
+    res = (r.get("resources") or [{}])[0]
+    if r.get("status_code") == "FAIL":
+        print("FAIL", r["metadata"]["event_code"], res.get("uid"), r.get("unmapped", {}).get("compliance", {}).get("CIS-7.0"))
 planted = ["acme-public-assets", "acme-customer-data", "svc-deploy", "acme-admin-policy", "acme-trail",
            "acme-cloudtrail-logs", "acme-legacy-admin", "vpc-", "sg-", "key/", "passwordpolicy", "password-policy"]
 for name in planted:
