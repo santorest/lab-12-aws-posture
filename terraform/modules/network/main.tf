@@ -21,10 +21,15 @@ variable "vpc_no_flow_logs" {
 locals {
   vpc_cidr    = "10.0.0.0/16"
   admin_cidrs = var.sg_admin_open ? ["0.0.0.0/0"] : [local.vpc_cidr]
-  # rules of the default security group; none when fixed
-  default_ingress = var.sg_default_open ? [{ protocol = "-1", self = true }] : []
-  default_egress  = var.sg_default_open ? [{ protocol = "-1", cidr = "0.0.0.0/0" }] : []
+  # Rules of the default security group, written as attributes: an explicit empty list removes every rule,
+  # while empty dynamic blocks would only mean "not specified" and leave the old rules in place.
+  rule = { description = null, from_port = 0, to_port = 0, protocol = "-1", self = false, cidr_blocks = [],
+  ipv6_cidr_blocks = [], prefix_list_ids = [], security_groups = [] }
+  default_ingress = var.sg_default_open ? [merge(local.rule, { self = true })] : []
+  default_egress  = var.sg_default_open ? [merge(local.rule, { cidr_blocks = ["0.0.0.0/0"] })] : []
 }
+
+data "aws_caller_identity" "current" {}
 
 resource "aws_vpc" "this" {
   cidr_block = local.vpc_cidr
@@ -51,26 +56,10 @@ resource "aws_security_group" "legacy_admin" {
 
 # P6b — the default security group: allows traffic, or has no rules at all
 resource "aws_default_security_group" "this" {
-  vpc_id = aws_vpc.this.id
-  tags   = { Name = "acme-default-sg" }
-  dynamic "ingress" {
-    for_each = local.default_ingress
-    content {
-      from_port = 0
-      to_port   = 0
-      protocol  = ingress.value.protocol
-      self      = ingress.value.self
-    }
-  }
-  dynamic "egress" {
-    for_each = local.default_egress
-    content {
-      from_port   = 0
-      to_port     = 0
-      protocol    = egress.value.protocol
-      cidr_blocks = [egress.value.cidr]
-    }
-  }
+  vpc_id  = aws_vpc.this.id
+  tags    = { Name = "acme-default-sg" }
+  ingress = local.default_ingress
+  egress  = local.default_egress
 }
 
 # P7b — VPC flow logs to CloudWatch Logs
@@ -84,8 +73,17 @@ resource "aws_iam_role" "flow" {
   count = var.vpc_no_flow_logs ? 0 : 1
   name  = "acme-vpc-flow-logs"
   assume_role_policy = jsonencode({
-    Version   = "2012-10-17"
-    Statement = [{ Effect = "Allow", Principal = { Service = "vpc-flow-logs.amazonaws.com" }, Action = "sts:AssumeRole" }]
+    Version = "2012-10-17"
+    Statement = [{
+      Effect    = "Allow"
+      Principal = { Service = "vpc-flow-logs.amazonaws.com" }
+      Action    = "sts:AssumeRole"
+      # only flow logs of this account may use the role (confused deputy)
+      Condition = {
+        StringEquals = { "aws:SourceAccount" = data.aws_caller_identity.current.account_id }
+        ArnLike      = { "aws:SourceArn" = "arn:aws:ec2:*:${data.aws_caller_identity.current.account_id}:vpc-flow-log/*" }
+      }
+    }]
   })
 }
 
