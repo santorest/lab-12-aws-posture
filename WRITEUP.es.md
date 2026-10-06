@@ -53,8 +53,10 @@ otra cosa.
   sembrada en el emulador, una pequeña verificación de respaldo en `postureck` la cubre, y cada hallazgo indica la
   herramienta que lo produjo.
 - **Una correspondencia que no se desvía.** Los hallazgos se identifican por (verificación, recurso). Los grupos de
-  seguridad, las VPC y las llaves tienen ids aleatorios, así que se reconocen por su etiqueta Name, que Prowler
-  informa como label.
+  seguridad, las VPC y las llaves tienen ids aleatorios, así que se reconocen por su etiqueta Name exacta, que Prowler
+  informa como label. Después de la corrección, cada elemento sembrado se juzga sobre los pares exactos (verificación,
+  recurso) que fallaron antes: una etiqueta renombrada, un aprobado en otro recurso o una verificación que queda en
+  silencio no pueden hacer que una falla parezca corregida.
 - **Un desmontaje que se verifica.** El emulador trae sus propios recursos de ejemplo, así que el desmontaje se
   compara con un inventario tomado antes de crear nada.
 

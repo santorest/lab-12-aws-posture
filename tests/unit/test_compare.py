@@ -14,7 +14,7 @@ SG = Planted(
     (Detector("prowler", "sg_ssh_open"), Detector("postureck", "pc_sg_admin_ports")),
 )
 BUCKET = Planted("P1", "public bucket", "2.1.4", "acme-public-assets", (Detector("prowler", "s3_public"),))
-SG_ARN = "arn:aws:ec2:us-east-1:000000000000:security-group/sg-1 acme-legacy-admin"
+SG_ARN = "arn:aws:ec2:us-east-1:000000000000:security-group/acme-legacy-admin"
 BUCKET_ARN = "arn:aws:s3:::acme-public-assets"
 
 
@@ -153,3 +153,56 @@ def test_exception_matches_by_name_label():
         ("Name:acme-vpc",),
     )
     assert compare([], [vpc], [], [exc]).regressions == ()
+
+
+# --- final review: an item is judged after the fix on the exact resources its detectors failed on before
+
+
+def test_renamed_tag_cannot_make_a_planted_flaw_vanish():
+    sg = "arn:aws:ec2:us-east-1:0:security-group/sg-1"
+    before = [
+        Finding("sg_ssh_open", sg, "FAIL", "high", "t", "ec2", "us-east-1", "prowler", (), ("Name:acme-legacy-admin",))
+    ]
+    after = [Finding("sg_ssh_open", sg, "FAIL", "high", "t", "ec2", "us-east-1", "prowler", (), ("Name:renamed",))]
+    assert compare(before, after, [SG], []).items[0].after == "failing"
+
+
+def test_pass_on_another_resource_does_not_fix_the_planted_one():
+    before = [f("sg_ssh_open", SG_ARN)]
+    after = [f("sg_ssh_open", "arn:aws:ec2:us-east-1:0:security-group/sg-other", "PASS")]
+    assert compare(before, after, [SG], []).items[0].after == "unverified"
+
+
+def test_one_silent_detector_makes_the_item_unverified():
+    two = Planted(
+        "P6a", "t", "6.3", "acme-legacy-admin", (Detector("prowler", "port22"), Detector("prowler", "port3389"))
+    )
+    before = [f("port22", SG_ARN), f("port3389", SG_ARN)]
+    after = [f("port22", SG_ARN, "PASS")]
+    assert compare(before, after, [two], []).items[0].after == "unverified"
+
+
+def test_resource_match_is_exact_not_a_substring():
+    backup = "arn:aws:s3:::acme-public-assets-backup"
+    c = compare([f("s3_public", backup, service="s3")], [], [BUCKET], [])
+    assert c.items[0].detected is False
+
+
+def test_exception_must_name_the_resource_exactly():
+    loose = Exception_("s3_public", "assets", "some other bucket", "web team")
+    c = compare(
+        [f("s3_public", BUCKET_ARN, service="s3")], [f("s3_public", BUCKET_ARN, service="s3")], [BUCKET], [loose]
+    )
+    assert c.items[0].after == "failing"
+    exact = Exception_("s3_public", "acme-public-assets", "website bucket", "web team")
+    backup = f("s3_public", "arn:aws:s3:::acme-public-assets-backup", service="s3")
+    assert len(compare([], [backup], [], [exact]).regressions) == 1
+
+
+def test_validate_requires_prowler_findings_per_service():
+    own_iam = Finding(
+        "pc_iam_user_mfa_keys", "arn:aws:iam::0:user/u", "PASS", "high", "t", "iam", "us-east-1", "postureck", ()
+    )
+    s3 = f("s3_public", BUCKET_ARN, service="s3")
+    with pytest.raises(AuditError, match="iam"):
+        validate([s3, own_iam], ["s3", "iam"], "after")

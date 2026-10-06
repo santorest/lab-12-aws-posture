@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from collections import Counter
 from collections.abc import Sequence
 from dataclasses import dataclass
@@ -29,16 +30,16 @@ class Comparison:
 
 
 def validate(findings: Sequence[Finding], services: Sequence[str], phase: str) -> None:
-    """An audit that produced nothing for a deployed service did not really audit it."""
-    seen = {f.service for f in findings}
+    """Prowler must have reported on every deployed service: the fallback check cannot stand in for a failed scan."""
+    seen = {f.service for f in findings if f.tool == "prowler"}
     missing = [s for s in services if s not in seen]
     if missing:
-        raise AuditError(f"{phase} audit: no finding from any tool for deployed service(s) {', '.join(missing)}")
+        raise AuditError(f"{phase} audit: no Prowler finding for deployed service(s) {', '.join(missing)}")
 
 
 def _named(f: Finding, match: str) -> bool:
-    # resources with random ids (security groups, VPCs, keys) are matched by their Name tag label
-    return match in f.resource or any(match in label for label in f.labels)
+    """Exact: the last segment of the resource ARN, or the Name tag (security groups, VPCs and keys have random ids)."""
+    return re.split(r"[:/]", f.resource)[-1] == match or f"Name:{match}" in f.labels
 
 
 def _matches(f: Finding, item: Planted) -> bool:
@@ -50,13 +51,19 @@ def _covered(f: Finding, exceptions: Sequence[Exception_]) -> bool:
 
 
 def _item(item: Planted, before: Sequence[Finding], after: Sequence[Finding], exc: Sequence[Exception_]) -> ItemResult:
-    detected = any(f.status == "FAIL" and _matches(f, item) for f in before)
+    # the exact (check, resource) keys the detectors failed on before the fix: the after-state is judged on them, so
+    # a renamed tag, a PASS on some other resource or one detector going silent cannot make the flaw look fixed
+    failed = {f.key for f in before if f.status == "FAIL" and _matches(f, item)}
+    detected = bool(failed)
     checks = {d.check_id for d in item.detectors}
-    if any(e.check_id in checks and e.resource_match in item.resource_match for e in exc):
+    after_status = {f.key: f.status for f in after}
+    if any(e.check_id in checks and e.resource_match == item.resource_match for e in exc):
         state = "excepted"
-    elif any(f.status == "FAIL" and _matches(f, item) for f in after):
+    elif any(after_status.get(k) == "FAIL" for k in failed) or any(
+        f.status == "FAIL" and _matches(f, item) for f in after
+    ):
         state = "failing"
-    elif not any(f.check_id in checks and f.status in ("PASS", "FAIL") for f in after):
+    elif not detected or any(after_status.get(k) not in ("PASS", "FAIL") for k in failed):
         state = "unverified"
     else:
         state = "fixed"

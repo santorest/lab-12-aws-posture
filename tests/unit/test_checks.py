@@ -74,3 +74,20 @@ def test_session_for_points_every_client_at_the_endpoint(monkeypatch: pytest.Mon
     monkeypatch.setenv("AWS_ENDPOINT_URL", "http://unused")  # so the teardown restores the variable session_for sets
     client = session_for("http://emulator.test:4566").client("s3")
     assert client.meta.endpoint_url == "http://emulator.test:4566"
+
+
+def test_inventory_lists_flow_logs_aliases_and_the_password_policy(session: boto3.Session):
+    baseline = set(inventory(session))
+    ec2 = session.client("ec2")
+    vpc = ec2.create_vpc(CidrBlock="10.2.0.0/16")["Vpc"]["VpcId"]
+    session.client("s3").create_bucket(Bucket="flow-bucket")  # the flow log's destination must exist
+    ec2.create_flow_logs(ResourceIds=[vpc], ResourceType="VPC", TrafficType="ALL", LogDestinationType="s3",
+                         LogDestination="arn:aws:s3:::flow-bucket")  # fmt: skip
+    kms = session.client("kms")
+    key = kms.create_key()["KeyMetadata"]["KeyId"]
+    kms.create_alias(AliasName="alias/acme-data", TargetKeyId=key)
+    session.client("iam").update_account_password_policy(MinimumPasswordLength=14)
+    left = set(inventory(session)) - baseline
+    assert any(r.startswith("flow-log/") for r in left)
+    assert any(r.endswith("alias/acme-data") for r in left)
+    assert "iam-account-password-policy" in left

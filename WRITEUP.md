@@ -15,7 +15,7 @@ bundle: "Published on the portfolio site with its SHA-256 checksum"
 # AWS Cloud Security Posture Audit (Emulated)
 
 > **TL;DR:** A small company's hand-built AWS account is rebuilt with Terraform on LocalStack, with documented
-> misconfigurations planted on purpose: a public bucket, unencrypted and unversioned customer data, an
+> misconfigurations planted on purpose: a public bucket, customer data not encrypted with the company's key and unversioned, an
 > everything-on-everything policy, a long-lived key without MFA, a weak password policy, SSH and RDP open to the
 > internet, an open default security group, a key without rotation and a VPC without flow logs. Prowler audits the
 > account before and after a Terraform fix; CI fails unless every planted flaw was detected and then cleared, nothing
@@ -49,7 +49,9 @@ that the fix removed them, and that the fix did not open something else.
 - **An independent auditor.** Prowler does the auditing. Where Prowler has no check for a planted flaw on the
   emulator, a small fallback check in `postureck` covers it, and every finding names the tool that produced it.
 - **Matching that does not drift.** Findings are keyed by (check, resource). Security groups, VPCs and keys have
-  random ids, so they are matched by their Name tag, which Prowler reports as a label.
+  random ids, so they are matched by their exact Name tag, which Prowler reports as a label. After the fix, each
+  planted item is judged on the exact (check, resource) pairs that failed before: a renamed tag, a PASS on some
+  other resource or one detector going silent cannot make a flaw look fixed.
 - **A teardown that is checked.** The emulator ships its own sample resources, so the teardown is compared with an
   inventory taken before anything was created.
 

@@ -29,6 +29,11 @@ sys.exit(0 if all(s.get(k) in ('available', 'running') for k in ('s3', 'iam', 's
   sleep 2
 done
 [ -n "$healthy" ] || fail "LocalStack is not healthy"
+# a LocalStack that was already running must be the pinned release (the report names that one)
+pinned=${image#*:}
+pinned=${pinned%%@*}
+running=$(curl -sf "$endpoint/_localstack/info" | python3 -c "import json, sys; print(json.load(sys.stdin).get('version', ''))")
+case "$running" in "$pinned"|"$pinned".*|"$pinned"-*) ;; *) fail "LocalStack $running is running, the audit pins $pinned" ;; esac
 
 if [ ! -x .venv-prowler/bin/prowler ]; then
   python3 -m venv .venv-prowler
@@ -52,12 +57,16 @@ tf() { terraform -chdir=terraform "$@"; }
 # what the emulator holds before the lab creates anything (LocalStack ships its own sample resources)
 postureck inventory --endpoint "$endpoint" --out out/baseline.json || fail "baseline inventory"
 tf init -input=false > out/terraform-init.log || fail "terraform init"
+# if anything fails from here on, remove what was created, so the next run's baseline starts clean
+cleanup() { tf destroy -auto-approve -input=false -var-file=envs/remediated.tfvars > out/destroy-on-error.log 2>&1 || true; }
+trap 'rc=$?; if [ "$rc" -ne 0 ]; then cleanup; fi; exit "$rc"' EXIT
 tf apply -auto-approve -input=false -var-file=envs/vulnerable.tfvars > out/apply-vulnerable.log || fail "apply vulnerable"
 audit before
 tf apply -auto-approve -input=false -var-file=envs/remediated.tfvars > out/apply-remediated.log || fail "apply remediated"
 audit after
 tf destroy -auto-approve -input=false -var-file=envs/remediated.tfvars > out/destroy.log || fail "terraform destroy"
 postureck inventory --endpoint "$endpoint" --out out/inventory.json || fail "inventory"
+trap - EXIT
 
 before=$(compgen -G "out/before/*.ocsf.json" | head -1)
 after=$(compgen -G "out/after/*.ocsf.json" | head -1)

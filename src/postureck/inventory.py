@@ -26,7 +26,17 @@ def inventory(session: boto3.Session) -> list[str]:
         if sg.get("VpcId") in {v["VpcId"] for v in vpcs}:
             out.append(f"security-group/{sg['GroupId']}")
 
+    out += [f"flow-log/{fl['FlowLogId']}" for fl in ec2.describe_flow_logs().get("FlowLogs", [])]
+
+    try:
+        iam.get_account_password_policy()
+        out.append("iam-account-password-policy")
+    except iam.exceptions.NoSuchEntityException:
+        pass
+
     kms = session.client("kms")
+    for aliases in kms.get_paginator("list_aliases").paginate():
+        out += [a["AliasArn"] for a in aliases["Aliases"] if not a["AliasName"].startswith("alias/aws/")]
     for keys in kms.get_paginator("list_keys").paginate():
         for key in keys["Keys"]:
             meta = kms.describe_key(KeyId=key["KeyId"])["KeyMetadata"]
