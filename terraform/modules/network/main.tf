@@ -52,6 +52,7 @@ resource "aws_security_group" "legacy_admin" {
 # P6b — the default security group: allows traffic, or has no rules at all
 resource "aws_default_security_group" "this" {
   vpc_id = aws_vpc.this.id
+  tags   = { Name = "acme-default-sg" }
   dynamic "ingress" {
     for_each = local.default_ingress
     content {
@@ -108,6 +109,15 @@ resource "aws_flow_log" "this" {
   traffic_type    = "ALL"
   log_destination = aws_cloudwatch_log_group.flow[0].arn
   iam_role_arn    = aws_iam_role.flow[0].arn
+}
+
+output "names" {
+  description = "Name tags of the planted network resources"
+  value = [
+    aws_security_group.legacy_admin.tags["Name"],
+    aws_default_security_group.this.tags["Name"],
+    aws_vpc.this.tags["Name"],
+  ]
 }
 
 output "posture" {

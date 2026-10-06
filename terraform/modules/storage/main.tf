@@ -17,6 +17,10 @@ variable "s3_data_no_versioning_tls" {
   description = "P2b"
   type        = bool
 }
+variable "extra_public_bucket" {
+  description = "Demo only: a new public bucket added by the remediation"
+  type        = bool
+}
 variable "kms_key_arn" {
   description = "Key for the data bucket's default encryption"
   type        = string
@@ -103,6 +107,32 @@ resource "aws_s3_bucket_policy" "customer_data_tls" {
   })
 }
 
+# Demo B only: a "fix" that adds a public exports bucket — absent before, failing after: a regression
+resource "aws_s3_bucket" "exports" {
+  count         = var.extra_public_bucket ? 1 : 0
+  bucket        = "acme-exports"
+  force_destroy = true
+}
+
+resource "aws_s3_bucket_public_access_block" "exports" {
+  count                   = var.extra_public_bucket ? 1 : 0
+  bucket                  = aws_s3_bucket.exports[0].id
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+
+resource "aws_s3_bucket_policy" "exports" {
+  count      = var.extra_public_bucket ? 1 : 0
+  bucket     = aws_s3_bucket.exports[0].id
+  depends_on = [aws_s3_bucket_public_access_block.exports]
+  policy = jsonencode({
+    Version   = "2012-10-17"
+    Statement = [{ Sid = "PublicRead", Effect = "Allow", Principal = "*", Action = "s3:GetObject", Resource = "${aws_s3_bucket.exports[0].arn}/*" }]
+  })
+}
+
 output "data_bucket_arn" {
   description = "ARN of the customer data bucket"
   value       = aws_s3_bucket.customer_data.arn
@@ -116,5 +146,6 @@ output "posture" {
     p2a_encryption         = length(aws_s3_bucket_server_side_encryption_configuration.customer_data) > 0
     p2b_versioning         = length(aws_s3_bucket_versioning.customer_data) > 0
     p2b_tls_only           = length(aws_s3_bucket_policy.customer_data_tls) > 0
+    extra_public_bucket    = length(aws_s3_bucket.exports) > 0
   }
 }

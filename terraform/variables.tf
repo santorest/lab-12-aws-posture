@@ -1,4 +1,5 @@
-# One switch per planted flaw (true = the flaw is present). envs/vulnerable.tfvars sets all true, envs/remediated.tfvars
+# One switch per planted flaw (true = the flaw is present); item 5 (CloudTrail) is not planted: the emulator
+# (LocalStack 4.14.0 community) has no CloudTrail. envs/vulnerable.tfvars sets all true, envs/remediated.tfvars
 # all false; both apply to the same state, so the remediation is an in-place change of the same resources.
 variable "endpoint" {
   description = "LocalStack endpoint"
@@ -30,14 +31,6 @@ variable "iam_weak_password_policy" {
   description = "P4b: weak account password policy"
   type        = bool
 }
-variable "trail_missing_multiregion" {
-  description = "P5a: single-region trail"
-  type        = bool
-}
-variable "trail_no_validation" {
-  description = "P5b: trail without log file validation"
-  type        = bool
-}
 variable "sg_admin_open" {
   description = "P6a: SSH and RDP open to 0.0.0.0/0"
   type        = bool
@@ -54,8 +47,8 @@ variable "vpc_no_flow_logs" {
   description = "P7b: VPC without flow logs"
   type        = bool
 }
-variable "cloudtrail_bucket_public" {
-  description = "Demo only: the CloudTrail log bucket made public"
+variable "extra_public_bucket" {
+  description = "Demo only: the remediation adds a new public bucket (acme-exports)"
   type        = bool
   default     = false
 }

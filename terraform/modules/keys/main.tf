@@ -14,6 +14,7 @@ resource "aws_kms_key" "data" {
   description             = "acme data key"
   enable_key_rotation     = !var.kms_no_rotation
   deletion_window_in_days = 7
+  tags                    = { Name = "acme-data" }
 }
 
 resource "aws_kms_alias" "data" {
@@ -24,6 +25,11 @@ resource "aws_kms_alias" "data" {
 output "key_arn" {
   description = "ARN of the acme data key"
   value       = aws_kms_key.data.arn
+}
+
+output "names" {
+  description = "Name tag of the key"
+  value       = [aws_kms_key.data.tags["Name"]]
 }
 
 output "posture" {

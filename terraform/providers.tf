@@ -8,12 +8,11 @@ provider "aws" {
   skip_requesting_account_id  = true
   s3_use_path_style           = true
   endpoints {
-    s3         = var.endpoint
-    iam        = var.endpoint
-    sts        = var.endpoint
-    cloudtrail = var.endpoint
-    ec2        = var.endpoint
-    kms        = var.endpoint
-    logs       = var.endpoint
+    s3   = var.endpoint
+    iam  = var.endpoint
+    sts  = var.endpoint
+    ec2  = var.endpoint
+    kms  = var.endpoint
+    logs = var.endpoint
   }
 }

@@ -10,8 +10,6 @@ run "vulnerable" {
     iam_admin_policy          = true
     iam_user_keys_no_mfa      = true
     iam_weak_password_policy  = true
-    trail_missing_multiregion = true
-    trail_no_validation       = true
     sg_admin_open             = true
     sg_default_open           = true
     kms_no_rotation           = true
@@ -42,14 +40,6 @@ run "vulnerable" {
     error_message = "P4b: the password policy must be weak"
   }
   assert {
-    condition     = !output.posture.p5a_multi_region
-    error_message = "P5a: the trail must be single-region"
-  }
-  assert {
-    condition     = !output.posture.p5b_log_validation
-    error_message = "P5b: the trail must not validate log files"
-  }
-  assert {
     condition     = contains(output.posture.p6a_admin_cidrs, "0.0.0.0/0")
     error_message = "P6a: SSH/RDP must be open to the internet"
   }
@@ -65,6 +55,10 @@ run "vulnerable" {
     condition     = !output.posture.p7b_flow_logs
     error_message = "P7b: the VPC must have no flow log"
   }
+  assert {
+    condition     = !output.posture.extra_public_bucket
+    error_message = "the demo-only public exports bucket must not exist by default"
+  }
 }
 
 run "remediated" {
@@ -76,8 +70,6 @@ run "remediated" {
     iam_admin_policy          = false
     iam_user_keys_no_mfa      = false
     iam_weak_password_policy  = false
-    trail_missing_multiregion = false
-    trail_no_validation       = false
     sg_admin_open             = false
     sg_default_open           = false
     kms_no_rotation           = false
@@ -108,14 +100,6 @@ run "remediated" {
     error_message = "P4b: the password policy must be strong"
   }
   assert {
-    condition     = output.posture.p5a_multi_region
-    error_message = "P5a: the trail must be multi-region"
-  }
-  assert {
-    condition     = output.posture.p5b_log_validation
-    error_message = "P5b: the trail must validate log files"
-  }
-  assert {
     condition     = !contains(output.posture.p6a_admin_cidrs, "0.0.0.0/0") && length(output.posture.p6a_admin_cidrs) > 0
     error_message = "P6a: SSH/RDP must be limited to the VPC"
   }
@@ -132,7 +116,28 @@ run "remediated" {
     error_message = "P7b: the VPC must have a flow log"
   }
   assert {
-    condition     = output.posture.trail_bucket_block_public_access
-    error_message = "the CloudTrail log bucket must block public access"
+    condition     = output.posture.tagged == toset(["acme-legacy-admin", "acme-default-sg", "acme-vpc", "acme-data"])
+    error_message = "the planted network and key resources must carry their Name tags (Prowler matches them by label)"
+  }
+}
+
+run "demo_public_exports_bucket" {
+  command = plan
+  variables {
+    s3_public_assets          = false
+    s3_data_unencrypted       = false
+    s3_data_no_versioning_tls = false
+    iam_admin_policy          = false
+    iam_user_keys_no_mfa      = false
+    iam_weak_password_policy  = false
+    sg_admin_open             = false
+    sg_default_open           = false
+    kms_no_rotation           = false
+    vpc_no_flow_logs          = false
+    extra_public_bucket       = true
+  }
+  assert {
+    condition     = output.posture.extra_public_bucket
+    error_message = "demo B: the public exports bucket must exist"
   }
 }

@@ -4,8 +4,8 @@ output "posture" {
   value = merge(
     module.storage.posture,
     module.identity.posture,
-    module.logging.posture,
     module.network.posture,
     module.keys.posture,
+    { tagged = toset(concat(module.network.names, module.keys.names)) },
   )
 }
