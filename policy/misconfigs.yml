@@ -1,0 +1,68 @@
+# The planted misconfigurations, one entry per part, and the detectors that must catch them before the fix and
+# clear after it. Detectors come from the feasibility spike (runs 37373076384, 37411771894); CIS ids are those
+# Prowler 5.44.0 maps to CIS AWS Foundations v7.0. Item 5 (CloudTrail) is not planted: the emulator has no CloudTrail.
+planted:
+  - id: P1
+    title: Assets bucket publicly readable, Block Public Access off
+    cis: "3.1.4"
+    resource_match: acme-public-assets
+    detectors:
+      - {tool: prowler, check_id: s3_bucket_level_public_access_block}
+      - {tool: prowler, check_id: s3_bucket_public_access}
+  - id: P2a
+    title: Customer data not encrypted with the company's KMS key (S3 encrypts with SSE-S3 by default)
+    cis: outside CIS 7.0
+    resource_match: acme-customer-data
+    detectors:
+      - {tool: prowler, check_id: s3_bucket_kms_encryption}
+  - id: P2b
+    title: Customer data bucket unversioned and reachable over HTTP
+    cis: "3.1.1"
+    resource_match: acme-customer-data
+    detectors:
+      - {tool: prowler, check_id: s3_bucket_object_versioning}
+      - {tool: prowler, check_id: s3_bucket_secure_transport_policy}
+  - id: P3
+    title: Policy allowing every action on every resource, attached to a user
+    cis: "2.14"
+    resource_match: acme-admin-policy
+    detectors:
+      - {tool: prowler, check_id: iam_customer_attached_policy_no_administrative_privileges}
+  - id: P4a
+    title: Long-lived access key on a user without MFA
+    cis: "2.10"
+    resource_match: svc-deploy
+    detectors:
+      - {tool: postureck, check_id: pc_iam_user_mfa_keys}
+  - id: P4b
+    title: Weak account password policy
+    cis: "2.8, 2.9"
+    resource_match: password-policy
+    detectors:
+      - {tool: prowler, check_id: iam_password_policy_minimum_length_14}
+      - {tool: prowler, check_id: iam_password_policy_reuse_24}
+  - id: P6a
+    title: SSH and RDP open to the internet
+    cis: "6.3"
+    resource_match: acme-legacy-admin
+    detectors:
+      - {tool: prowler, check_id: ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_22}
+      - {tool: prowler, check_id: ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_3389}
+  - id: P6b
+    title: Default security group allows traffic
+    cis: "6.5"
+    resource_match: acme-default-sg
+    detectors:
+      - {tool: prowler, check_id: ec2_securitygroup_default_restrict_traffic}
+  - id: P7a
+    title: KMS key without rotation
+    cis: "4.6"
+    resource_match: acme-data
+    detectors:
+      - {tool: prowler, check_id: kms_cmk_rotation_enabled}
+  - id: P7b
+    title: VPC without flow logs
+    cis: "4.7"
+    resource_match: acme-vpc
+    detectors:
+      - {tool: prowler, check_id: vpc_flow_logs_enabled}

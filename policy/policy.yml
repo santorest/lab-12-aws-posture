@@ -1,0 +1,6 @@
+# What the audit runs against and how findings map to CIS. The emulator image is pinned by digest: the last
+# LocalStack release that starts without an auth token (community edition, no CloudTrail).
+framework: CIS-7.0                 # OCSF compliance key of CIS AWS Foundations v7.0 in Prowler 5.44.0
+services: [s3, iam, ec2, vpc, kms]
+prowler_version: "5.44.0"
+localstack_image: localstack/localstack:4.14.0@sha256:3ebc37595918b8accb852f8048fef2aff047d465167edd655528065b07bc364a

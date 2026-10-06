@@ -1,0 +1,2 @@
+# Documented exceptions: a finding a planted item or a regression may not count, with a reason and an owner role.
+exceptions: []
