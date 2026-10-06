@@ -107,7 +107,47 @@ It runs on every pull request, on pushes to `main`, weekly and on demand.
 
 ## 7. Results
 
-Results are added from the first CI runs.
+From [run 37414269426](https://github.com/santorest/lab-12-aws-posture/actions/runs/37414269426) on `main` (2026-10-06), the first green run; `docs/example-report.html`
+is its report. LocalStack 4.14.0 (community edition, pinned by digest), Prowler 5.44.0, Terraform 1.16.5 with the AWS
+provider 6.67.0, CIS AWS Foundations v7.0 as Prowler maps it.
+
+| | Before the fix | After the fix |
+|---|---|---|
+| Planted items detected | **6 / 6** (all 10 parts) | — |
+| Planted items passing | 0 / 6 | **6 / 6** (all 10 parts) |
+| Regressions | — | **0** |
+| Resources left after teardown | — | **0** |
+
+- **Every planted part was caught by the tool assigned to it**: nine by Prowler, one (the access key without MFA) by
+  the fallback check, because Prowler only checks MFA for users with console access.
+- **Failing findings by CIS section** (the planted parts and everything else Prowler reports on the five services):
+  section 2 (identity) 7 → 3, section 3 (storage) 6 → 4, section 4 (logging and keys) 3 → 1, section 6 (networking)
+  11 → 8.
+- **Open findings: read the totals with care.** 1,201 findings fail both before and after the fix. Only 20 of them
+  are on the lab's own resources — controls outside the planted set, such as replication, lifecycle rules, object
+  lock, access logging and MFA delete on the two buckets, hardware MFA on the deploy user — and they are reported,
+  not hidden. The other 1,181 belong to the emulator itself: 1,159 are "EBS snapshot not encrypted" on LocalStack's
+  built-in sample snapshots, which exist before the lab creates anything. That is also why the severity totals barely
+  move (high 1,181 → 1,171): the gate judges the planted items, regressions and teardown, not the totals.
+- **Time**: the audit step takes about 3 minutes (two Terraform applies, two Prowler scans of about 30 seconds each,
+  a destroy); the whole pipeline 4–6 minutes.
+
+**How it got there.** The first complete cycle
+([run 37413720116](https://github.com/santorest/lab-12-aws-posture/actions/runs/37413720116)) detected 6/6 but fixed 5/6, and found one regression. The default security
+group kept its rules after the "fix": Terraform treats empty rule blocks as "not specified", so nothing was removed —
+the rules are now written as an explicit empty list. And the regression was real: the IAM role the fix created for
+VPC flow logs could be assumed on behalf of any account (no `aws:SourceAccount` condition). The fix had introduced a
+new weakness, and the regression check is what found it.
+
+**Static scan, for comparison.** Checkov, run on both postures, did not report the SSH/RDP rule open to the internet
+in either of them: the address range comes from a conditional value it does not resolve. The live audit did.
+
+**Demo pull requests** (closed unmerged; the ruleset blocks the merge):
+
+| PR | Change | What happened |
+|---|---|---|
+| [#1](https://github.com/santorest/lab-12-aws-posture/pull/1) | SSH and RDP open to the internet again in the remediated posture | detected 6/6 but fixed 5/6: the gate failed with "planted flaw still failing after fix: P6a" |
+| [#2](https://github.com/santorest/lab-12-aws-posture/pull/2) | the "fix" also creates a new public bucket, `acme-exports` | every planted item was still fixed (6/6), but the gate failed on 12 regressions on the new bucket, among them public access (critical) and Block Public Access off (high) |
 
 ## 8. Lessons
 
@@ -121,6 +161,12 @@ Results are added from the first CI runs.
   checks; scanning by service keeps every check and still records the CIS mapping on each finding.
 - **Defaults change what can be planted.** S3 now encrypts every bucket with SSE-S3 by default, on AWS and on the
   emulator, so "no encryption at all" cannot be planted; the item became "not encrypted with the company's own key".
+- **A fix can open something new.** The flow-logs role the remediation added could be assumed on behalf of any
+  account; the totals still went down, and only the regression check (a finding absent before, failing after)
+  caught it.
+- **Empty is not the same as "remove".** Terraform treats empty rule blocks on the default security group as "not
+  specified" and leaves the old rules in place; an explicit empty list removes them. A plan with mocked providers
+  cannot show this — the real apply and the second audit did.
 - **Random ids need names.** Security groups, VPCs and keys come back with random ids; tagging them with a Name and
   matching on Prowler's labels is what lets a planted flaw be followed from before to after.
 

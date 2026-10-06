@@ -7,7 +7,23 @@ after it, nothing new appeared and nothing was left behind.
 
 **The AWS account is emulated (LocalStack); no real AWS account is used.** Every result comes from GitHub Actions runs.
 
-**Status: in progress.** Results are added from the first CI runs.
+**Status: in progress.** Every result below comes from GitHub Actions runs against the emulator.
+
+## Results
+
+From [run 37414269426](https://github.com/santorest/lab-12-aws-posture/actions/runs/37414269426) (LocalStack 4.14.0, Prowler 5.44.0, CIS AWS Foundations v7.0);
+[`docs/example-report.html`](docs/example-report.html) is its report.
+
+| | Before the fix | After the fix |
+|---|---|---|
+| Planted items detected | **6 / 6** | — |
+| Planted items passing | 0 / 6 | **6 / 6** |
+| Regressions | — | **0** |
+| Resources left after teardown | — | **0** |
+
+The open findings (failing before and after) are dominated by the emulator's own sample data — 1,159 of 1,201 are
+unencrypted sample EBS snapshots; 20 are on the lab's resources. Details, the demo pull requests and how the first
+run failed are in [WRITEUP.md](WRITEUP.md#7-results).
 
 ## How the cycle works
 

@@ -115,7 +115,50 @@ Se ejecuta en cada pull request, en cada push a `main`, semanalmente y a demanda
 
 ## 7. Resultados
 
-Los resultados se agregan a partir de las primeras ejecuciones de CI.
+De la [ejecución 37414269426](https://github.com/santorest/lab-12-aws-posture/actions/runs/37414269426) en `main` (2026-10-06), la primera en verde;
+`docs/example-report.html` es su informe. LocalStack 4.14.0 (edición comunitaria, fijada por digest), Prowler 5.44.0,
+Terraform 1.16.5 con el proveedor de AWS 6.67.0, CIS AWS Foundations v7.0 según el mapeo de Prowler.
+
+| | Antes de la corrección | Después de la corrección |
+|---|---|---|
+| Elementos sembrados detectados | **6 / 6** (las 10 partes) | — |
+| Elementos sembrados que cumplen | 0 / 6 | **6 / 6** (las 10 partes) |
+| Regresiones | — | **0** |
+| Recursos que quedan tras el desmontaje | — | **0** |
+
+- **Cada parte sembrada la detectó la herramienta asignada**: nueve Prowler y una (la llave de acceso sin MFA) la
+  verificación de respaldo, porque Prowler solo revisa el MFA de usuarios con acceso a la consola.
+- **Hallazgos que fallan por sección de CIS** (las partes sembradas y todo lo demás que Prowler informa sobre los cinco
+  servicios): sección 2 (identidad) 7 → 3, sección 3 (almacenamiento) 6 → 4, sección 4 (registros y llaves) 3 → 1,
+  sección 6 (redes) 11 → 8.
+- **Hallazgos abiertos: lea los totales con cuidado.** 1.201 hallazgos fallan antes y después de la corrección. Solo 20
+  están en los recursos del propio laboratorio — controles fuera del conjunto sembrado, como replicación, reglas de
+  ciclo de vida, object lock, registro de accesos y MFA delete en los dos buckets, o MFA de hardware en el usuario de
+  despliegue — y se reportan, no se ocultan. Los otros 1.181 pertenecen al emulador: 1.159 son "instantánea de EBS sin
+  cifrar" sobre las instantáneas de ejemplo que trae LocalStack, que existen antes de que el laboratorio cree nada. Por
+  eso los totales por severidad apenas se mueven (alta 1.181 → 1.171): la compuerta juzga los elementos sembrados, las
+  regresiones y el desmontaje, no los totales.
+- **Tiempo**: el paso de auditoría tarda unos 3 minutos (dos aplicaciones de Terraform, dos escaneos de Prowler de unos
+  30 segundos, un destroy); el pipeline completo, de 4 a 6 minutos.
+
+**Cómo se llegó ahí.** El primer ciclo completo ([ejecución 37413720116](https://github.com/santorest/lab-12-aws-posture/actions/runs/37413720116)) detectó 6/6 pero
+corrigió 5/6 y encontró una regresión. El grupo de seguridad por defecto conservó sus reglas después de la
+"corrección": Terraform trata los bloques de reglas vacíos como "no especificado", así que no se eliminó nada — ahora
+las reglas se escriben como una lista vacía explícita. Y la regresión era real: el rol de IAM que la corrección creó
+para los registros de flujo de la VPC podía asumirse en nombre de cualquier cuenta (sin condición
+`aws:SourceAccount`). La corrección había introducido una debilidad nueva, y la verificación de regresiones fue la que
+la encontró.
+
+**Escaneo estático, como comparación.** Checkov, ejecutado sobre ambas posturas, no informó la regla de SSH/RDP
+abierta a internet en ninguna de las dos: el rango de direcciones sale de un valor condicional que no resuelve. La
+auditoría en vivo sí.
+
+**Pull requests de demostración** (cerrados sin fusionar; el ruleset bloquea la fusión):
+
+| PR | Cambio | Qué pasó |
+|---|---|---|
+| [#1](https://github.com/santorest/lab-12-aws-posture/pull/1) | SSH y RDP abiertos a internet otra vez en la postura corregida | detectados 6/6 pero corregidos 5/6: la compuerta falló con "planted flaw still failing after fix: P6a" |
+| [#2](https://github.com/santorest/lab-12-aws-posture/pull/2) | la "corrección" crea además un bucket público nuevo, `acme-exports` | todos los elementos sembrados siguieron corregidos (6/6), pero la compuerta falló por 12 regresiones en el bucket nuevo, entre ellas acceso público (crítica) y Block Public Access desactivado (alta) |
 
 ## 8. Lecciones
 
@@ -130,6 +173,12 @@ Los resultados se agregan a partir de las primeras ejecuciones de CI.
 - **Los valores por defecto cambian lo que se puede sembrar.** S3 ahora cifra cada bucket con SSE-S3 por defecto, en
   AWS y en el emulador, así que "sin cifrado alguno" no se puede sembrar; el elemento pasó a ser "no cifrado con la
   llave propia de la empresa".
+- **Una corrección puede abrir algo nuevo.** El rol de registros de flujo que agregó la corrección podía asumirse
+  en nombre de cualquier cuenta; los totales igual bajaron, y solo la verificación de regresiones (un hallazgo ausente
+  antes que falla después) lo detectó.
+- **Vacío no es lo mismo que "eliminar".** Terraform trata los bloques de reglas vacíos del grupo de seguridad por
+  defecto como "no especificado" y deja las reglas anteriores; una lista vacía explícita las elimina. Un plan con
+  proveedores simulados no puede mostrarlo — lo mostraron la aplicación real y la segunda auditoría.
 - **Los ids aleatorios necesitan nombres.** Los grupos de seguridad, las VPC y las llaves vuelven con ids aleatorios;
   etiquetarlos con un Name y reconocerlos por los labels de Prowler es lo que permite seguir una falla sembrada de
   antes a después.
