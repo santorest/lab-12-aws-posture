@@ -33,7 +33,7 @@ done
 pinned=${image#*:}
 pinned=${pinned%%@*}
 running=$(curl -sf "$endpoint/_localstack/info" | python3 -c "import json, sys; print(json.load(sys.stdin).get('version', ''))")
-case "$running" in "$pinned"|"$pinned".*|"$pinned"-*) ;; *) fail "LocalStack $running is running, the audit pins $pinned" ;; esac
+case "$running" in "$pinned"|"$pinned".*|"$pinned"-*|"$pinned":*) ;; *) fail "LocalStack $running is running, the audit pins $pinned" ;; esac
 
 if [ ! -x .venv-prowler/bin/prowler ]; then
   python3 -m venv .venv-prowler
