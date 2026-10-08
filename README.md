@@ -7,7 +7,7 @@ after it, nothing new appeared and nothing was left behind.
 
 **The AWS account is emulated (LocalStack); no real AWS account is used.** Every result comes from GitHub Actions runs.
 
-**Status: in progress.** Every result below comes from GitHub Actions runs against the emulator.
+**Status: completed.** Every result below comes from GitHub Actions runs against the emulator.
 
 ## Results
 

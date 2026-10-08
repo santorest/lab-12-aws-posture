@@ -3,7 +3,7 @@ title: "Auditoría de postura de seguridad en AWS (emulada)"
 id: "lab-12-aws-posture"
 category: "Seguridad en la nube"
 type: "Laboratorio"
-status: "en curso"
+status: "completado"
 date: "2026-10-06"
 time_to_reproduce: "Unos 10 minutos: una ejecución de CI (fork, habilitar Actions, ejecutar CI); el trabajo de auditoría tarda de 3 a 5 minutos"
 skills: [AWS, LocalStack, Terraform, Prowler, Checkov, Python, boto3, GitHub Actions]

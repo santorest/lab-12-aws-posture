@@ -3,7 +3,7 @@ title: "AWS Cloud Security Posture Audit (Emulated)"
 id: "lab-12-aws-posture"
 category: "Cloud Security"
 type: "Lab"
-status: "in progress"
+status: "completed"
 date: "2026-10-06"
 time_to_reproduce: "About 10 minutes: one CI run (fork, enable Actions, run CI); the audit job takes 3–5 minutes"
 skills: [AWS, LocalStack, Terraform, Prowler, Checkov, Python, boto3, GitHub Actions]
