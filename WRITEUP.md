@@ -109,7 +109,7 @@ It runs on every pull request, on pushes to `main`, weekly and on demand.
 
 ## 7. Results
 
-From [run 37414269426](https://github.com/santorest/lab-12-aws-posture/actions/runs/37414269426) on `main` (2026-10-06), the first green run; `docs/example-report.html`
+From [run 37812253346](https://github.com/santorest/lab-12-aws-posture/actions/runs/37812253346) (2026-10-08), the final code after the review fixes; the first green run, [37414269426](https://github.com/santorest/lab-12-aws-posture/actions/runs/37414269426) on `main` (2026-10-06), gave the same numbers. `docs/example-report.html`
 is its report. LocalStack 4.14.0 (community edition, pinned by digest), Prowler 5.44.0, Terraform 1.16.5 with the AWS
 provider 6.67.0, CIS AWS Foundations v7.0 as Prowler maps it.
 

@@ -11,7 +11,7 @@ after it, nothing new appeared and nothing was left behind.
 
 ## Results
 
-From [run 37414269426](https://github.com/santorest/lab-12-aws-posture/actions/runs/37414269426) (LocalStack 4.14.0, Prowler 5.44.0, CIS AWS Foundations v7.0);
+From [run 37812253346](https://github.com/santorest/lab-12-aws-posture/actions/runs/37812253346), the final code (LocalStack 4.14.0, Prowler 5.44.0, CIS AWS Foundations v7.0);
 [`docs/example-report.html`](docs/example-report.html) is its report.
 
 | | Before the fix | After the fix |
