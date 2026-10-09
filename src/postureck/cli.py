@@ -50,7 +50,11 @@ def _report(args: argparse.Namespace) -> None:
     )
     before = _phase(args.before_prowler, args.before_own, settings.framework, settings.services, "before")
     after = _phase(args.after_prowler, args.after_own, settings.framework, settings.services, "after")
-    left = sorted(set(_resources(args.inventory)) - set(_resources(args.baseline)))
+    baseline = set(_resources(args.baseline))
+    stale = sorted(r for r in baseline if "acme-" in r or r == "iam-account-password-policy")
+    if stale:
+        raise AuditError(f"the baseline already holds lab resources (an earlier run left them): {', '.join(stale)}")
+    left = sorted(set(_resources(args.inventory)) - baseline)
     meta = dict(pair.split("=", 1) for pair in args.meta)
     call = (compare(before, after, planted, exceptions), planted, exceptions, settings, left, meta)
     out = args.out_dir

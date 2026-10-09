@@ -8,6 +8,21 @@ from typing import Any
 from postureck.findings import STATUSES, AuditError, Finding
 
 
+def _labels(raw: Any) -> tuple[str, ...]:
+    """Tags as "Key:Value": EC2 records carry that form, KMS records a "TagKey:<k>", "TagValue:<v>" pair instead."""
+    out: list[str] = []
+    key = None
+    for label in (str(x) for x in raw or ()):
+        if label.startswith("TagKey:"):
+            key = label.removeprefix("TagKey:")
+        elif label.startswith("TagValue:") and key is not None:
+            out.append(f"{key}:{label.removeprefix('TagValue:')}")
+            key = None
+        else:
+            out.append(label)
+    return tuple(out)
+
+
 def _record(r: Any, framework_key: str) -> Finding:
     if not isinstance(r, dict):
         raise AuditError("Prowler output: a record is not an object")
@@ -34,7 +49,7 @@ def _record(r: Any, framework_key: str) -> Finding:
         region=str(region),
         tool="prowler",
         cis=tuple(str(c) for c in compliance.get(framework_key) or ()),
-        labels=tuple(str(label) for label in resource.get("labels") or ()),
+        labels=_labels(resource.get("labels")),
     )
 
 

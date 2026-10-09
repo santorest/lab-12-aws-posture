@@ -16,8 +16,8 @@ P6B = Planted("P6b", "default SG", "5.4", "default-sg", (Detector("postureck", "
 PLANTED = (P1, P6A, P6B)
 EXC = (Exception_("s3_logging", "acme-cloudtrail-logs", "log bucket would need its own log bucket", "platform"),)
 B = "arn:aws:s3:::acme-public-assets"
-G = "sg-1 acme-legacy-admin"
-D = "sg-2 default-sg"
+G = "arn:aws:ec2:us-east-1:0:security-group/acme-legacy-admin"
+D = "arn:aws:ec2:us-east-1:0:security-group/default-sg"
 
 
 def f(check: str, resource: str, status: str = "FAIL", tool: str = "prowler", title: str = "t") -> Finding:

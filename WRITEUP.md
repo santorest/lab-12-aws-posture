@@ -3,7 +3,7 @@ title: "AWS Cloud Security Posture Audit (Emulated)"
 id: "lab-12-aws-posture"
 category: "Cloud Security"
 type: "Lab"
-status: "in progress"
+status: "completed"
 date: "2026-10-06"
 time_to_reproduce: "About 10 minutes: one CI run (fork, enable Actions, run CI); the audit job takes 3–5 minutes"
 skills: [AWS, LocalStack, Terraform, Prowler, Checkov, Python, boto3, GitHub Actions]
@@ -15,7 +15,7 @@ bundle: "Published on the portfolio site with its SHA-256 checksum"
 # AWS Cloud Security Posture Audit (Emulated)
 
 > **TL;DR:** A small company's hand-built AWS account is rebuilt with Terraform on LocalStack, with documented
-> misconfigurations planted on purpose: a public bucket, unencrypted and unversioned customer data, an
+> misconfigurations planted on purpose: a public bucket, customer data not encrypted with the company's key and unversioned, an
 > everything-on-everything policy, a long-lived key without MFA, a weak password policy, SSH and RDP open to the
 > internet, an open default security group, a key without rotation and a VPC without flow logs. Prowler audits the
 > account before and after a Terraform fix; CI fails unless every planted flaw was detected and then cleared, nothing
@@ -49,7 +49,9 @@ that the fix removed them, and that the fix did not open something else.
 - **An independent auditor.** Prowler does the auditing. Where Prowler has no check for a planted flaw on the
   emulator, a small fallback check in `postureck` covers it, and every finding names the tool that produced it.
 - **Matching that does not drift.** Findings are keyed by (check, resource). Security groups, VPCs and keys have
-  random ids, so they are matched by their Name tag, which Prowler reports as a label.
+  random ids, so they are matched by their exact Name tag, which Prowler reports as a label. After the fix, each
+  planted item is judged on the exact (check, resource) pairs that failed before: a renamed tag, a PASS on some
+  other resource or one detector going silent cannot make a flaw look fixed.
 - **A teardown that is checked.** The emulator ships its own sample resources, so the teardown is compared with an
   inventory taken before anything was created.
 
@@ -107,7 +109,7 @@ It runs on every pull request, on pushes to `main`, weekly and on demand.
 
 ## 7. Results
 
-From [run 37414269426](https://github.com/santorest/lab-12-aws-posture/actions/runs/37414269426) on `main` (2026-10-06), the first green run; `docs/example-report.html`
+From [run 37812253346](https://github.com/santorest/lab-12-aws-posture/actions/runs/37812253346) (2026-10-08), the final code after the review fixes; the first green run, [37414269426](https://github.com/santorest/lab-12-aws-posture/actions/runs/37414269426) on `main` (2026-10-06), gave the same numbers. `docs/example-report.html`
 is its report. LocalStack 4.14.0 (community edition, pinned by digest), Prowler 5.44.0, Terraform 1.16.5 with the AWS
 provider 6.67.0, CIS AWS Foundations v7.0 as Prowler maps it.
 

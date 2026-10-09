@@ -95,3 +95,13 @@ def test_check_and_inventory_commands(tmp_path: Path, emulated: None, monkeypatc
     inv = tmp_path / "inv.json"
     assert cli.main(["inventory", "--endpoint", "http://x", "--out", str(inv)]) == 0
     assert any(r.endswith(":user/svc-deploy") for r in json.loads(inv.read_text(encoding="utf-8")))
+
+
+def test_baseline_holding_lab_resources_exits_2(tmp_path: Path, capsys: pytest.CaptureFixture[str]):
+    # a failed earlier local run left the lab's resources: its leftovers would hide this run's
+    dirty = tmp_path / "baseline.json"
+    dirty.write_text('["arn:aws:s3:::acme-customer-data"]', encoding="utf-8")
+    args = report_args(tmp_path)
+    args[args.index("--baseline") + 1] = str(dirty)
+    assert cli.main(args) == 2
+    assert "baseline" in capsys.readouterr().err

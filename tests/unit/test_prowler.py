@@ -78,3 +78,11 @@ def test_manual_status_is_kept():
         records[0]["status_code"] = "MANUAL"
 
     assert parse_prowler(_broken(manual), KEY)[0].status == "MANUAL"
+
+
+def test_kms_tag_pairs_become_key_value_labels():
+    # Prowler writes EC2 tags as "Name:value" but KMS tags as a "TagKey:Name", "TagValue:value" pair (run 37811147781)
+    def kms(records):
+        records[0]["resources"][0]["labels"] = ["TagKey:Name", "TagValue:acme-data", "TagKey:env", "TagValue:lab"]
+
+    assert parse_prowler(_broken(kms), KEY)[0].labels == ("Name:acme-data", "env:lab")

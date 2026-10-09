@@ -3,7 +3,7 @@ title: "Auditoría de postura de seguridad en AWS (emulada)"
 id: "lab-12-aws-posture"
 category: "Seguridad en la nube"
 type: "Laboratorio"
-status: "en curso"
+status: "completado"
 date: "2026-10-06"
 time_to_reproduce: "Unos 10 minutos: una ejecución de CI (fork, habilitar Actions, ejecutar CI); el trabajo de auditoría tarda de 3 a 5 minutos"
 skills: [AWS, LocalStack, Terraform, Prowler, Checkov, Python, boto3, GitHub Actions]
@@ -53,8 +53,10 @@ otra cosa.
   sembrada en el emulador, una pequeña verificación de respaldo en `postureck` la cubre, y cada hallazgo indica la
   herramienta que lo produjo.
 - **Una correspondencia que no se desvía.** Los hallazgos se identifican por (verificación, recurso). Los grupos de
-  seguridad, las VPC y las llaves tienen ids aleatorios, así que se reconocen por su etiqueta Name, que Prowler
-  informa como label.
+  seguridad, las VPC y las llaves tienen ids aleatorios, así que se reconocen por su etiqueta Name exacta, que Prowler
+  informa como label. Después de la corrección, cada elemento sembrado se juzga sobre los pares exactos (verificación,
+  recurso) que fallaron antes: una etiqueta renombrada, un aprobado en otro recurso o una verificación que queda en
+  silencio no pueden hacer que una falla parezca corregida.
 - **Un desmontaje que se verifica.** El emulador trae sus propios recursos de ejemplo, así que el desmontaje se
   compara con un inventario tomado antes de crear nada.
 
@@ -115,7 +117,7 @@ Se ejecuta en cada pull request, en cada push a `main`, semanalmente y a demanda
 
 ## 7. Resultados
 
-De la [ejecución 37414269426](https://github.com/santorest/lab-12-aws-posture/actions/runs/37414269426) en `main` (2026-10-06), la primera en verde;
+De la [ejecución 37812253346](https://github.com/santorest/lab-12-aws-posture/actions/runs/37812253346) (2026-10-08), el código final tras las correcciones de la revisión; la primera en verde, [37414269426](https://github.com/santorest/lab-12-aws-posture/actions/runs/37414269426) en `main` (2026-10-06), dio las mismas cifras.
 `docs/example-report.html` es su informe. LocalStack 4.14.0 (edición comunitaria, fijada por digest), Prowler 5.44.0,
 Terraform 1.16.5 con el proveedor de AWS 6.67.0, CIS AWS Foundations v7.0 según el mapeo de Prowler.
 
