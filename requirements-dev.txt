@@ -1,4 +1,4 @@
-boto3==1.43.108
+boto3==1.43.111
 boto3-stubs[s3,iam,cloudtrail,ec2,kms,sts]==1.43.108
 PyYAML==6.0.3
 moto[s3,iam,cloudtrail,ec2,kms,sts]==5.2.3
