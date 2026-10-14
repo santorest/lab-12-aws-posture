@@ -1,0 +1,87 @@
+{
+  "baseRefName": "main",
+  "body": "Demonstration PR: sets \\`sg_admin_open = true\\` in \\`terraform/envs/remediated.tfvars\\`.\n\nExpected: the \\`audit\\` gate fails with \"planted flaw still failing after fix: P6a\"; Checkov in \\`iac-scan\\` reports it (not gating); the ruleset blocks the merge. It will be closed unmerged.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+  "closedAt": "2026-10-06T04:53:24Z",
+  "commits": [
+    {
+      "authoredDate": "2026-10-06T04:46:39Z",
+      "authors": [
+        {
+          "email": "37381624+santorest@users.noreply.github.com",
+          "id": "MDQ6VXNlcjM3MzgxNjI0",
+          "login": "santorest",
+          "name": "Santiago Restrepo Sánchez"
+        },
+        {
+          "email": "noreply@anthropic.com",
+          "id": "MDQ6VXNlcjgxODQ3",
+          "login": "claude",
+          "name": "Claude Opus 5.5"
+        }
+      ],
+      "committedDate": "2026-10-06T04:46:39Z",
+      "messageBody": "…e (expected to be blocked)\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "messageHeadline": "demo: SSH and RDP open to the internet again in the remediated postur…",
+      "oid": "d07bf0e0d1cacffd0b9b881a5e27fea5577ce019"
+    }
+  ],
+  "createdAt": "2026-10-06T04:46:43Z",
+  "headRefName": "demo/ssh-open-again",
+  "mergedAt": null,
+  "number": 1,
+  "state": "CLOSED",
+  "statusCheckRollup": [
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-06T04:47:44Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/santorest/lab-12-aws-posture/actions/runs/37415315283/job/112112527999",
+      "name": "lint",
+      "startedAt": "2026-10-06T04:46:50Z",
+      "status": "COMPLETED",
+      "workflowName": "ci"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-06T04:47:35Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/santorest/lab-12-aws-posture/actions/runs/37415315283/job/112112527794",
+      "name": "unit",
+      "startedAt": "2026-10-06T04:46:50Z",
+      "status": "COMPLETED",
+      "workflowName": "ci"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-06T04:47:34Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/santorest/lab-12-aws-posture/actions/runs/37415315283/job/112112527967",
+      "name": "iac-scan",
+      "startedAt": "2026-10-06T04:46:49Z",
+      "status": "COMPLETED",
+      "workflowName": "ci"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-06T04:52:08Z",
+      "conclusion": "FAILURE",
+      "detailsUrl": "https://github.com/santorest/lab-12-aws-posture/actions/runs/37415315283/job/112112528005",
+      "name": "audit",
+      "startedAt": "2026-10-06T04:46:50Z",
+      "status": "COMPLETED",
+      "workflowName": "ci"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-06T04:46:54Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/santorest/lab-12-aws-posture/actions/runs/37415315283/job/112112527963",
+      "name": "secrets",
+      "startedAt": "2026-10-06T04:46:49Z",
+      "status": "COMPLETED",
+      "workflowName": "ci"
+    }
+  ],
+  "title": "Demo: SSH and RDP open again after the fix (expected to be blocked)",
+  "url": "https://github.com/santorest/lab-12-aws-posture/pull/1"
+}

@@ -1,0 +1,9 @@
+diff --git a/terraform/envs/remediated.tfvars b/terraform/envs/remediated.tfvars
+index 98a051b..611acca 100644
+--- a/terraform/envs/remediated.tfvars
++++ b/terraform/envs/remediated.tfvars
+@@ -9,3 +9,4 @@ sg_admin_open             = false
+ sg_default_open           = false
+ kms_no_rotation           = false
+ vpc_no_flow_logs          = false
++extra_public_bucket       = true

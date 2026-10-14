@@ -1,0 +1,87 @@
+{
+  "baseRefName": "main",
+  "body": "Demonstration PR: sets \\`extra_public_bucket = true\\` in \\`terraform/envs/remediated.tfvars\\` — the remediation creates a public \\`acme-exports\\` bucket.\n\nExpected: every planted flaw is still fixed, but the \\`audit\\` gate fails on regressions on \\`acme-exports\\` (absent before, failing after); the ruleset blocks the merge. It will be closed unmerged.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+  "closedAt": "2026-10-06T04:58:26Z",
+  "commits": [
+    {
+      "authoredDate": "2026-10-06T04:53:27Z",
+      "authors": [
+        {
+          "email": "37381624+santorest@users.noreply.github.com",
+          "id": "MDQ6VXNlcjM3MzgxNjI0",
+          "login": "santorest",
+          "name": "Santiago Restrepo Sánchez"
+        },
+        {
+          "email": "noreply@anthropic.com",
+          "id": "MDQ6VXNlcjgxODQ3",
+          "login": "claude",
+          "name": "Claude Opus 5.5"
+        }
+      ],
+      "committedDate": "2026-10-06T04:53:27Z",
+      "messageBody": "…e blocked)\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "messageHeadline": "demo: the remediation adds a new public exports bucket (expected to b…",
+      "oid": "54fe9c7a966186599da4327c482aaa9f5b935949"
+    }
+  ],
+  "createdAt": "2026-10-06T04:53:33Z",
+  "headRefName": "demo/public-exports-bucket",
+  "mergedAt": null,
+  "number": 2,
+  "state": "CLOSED",
+  "statusCheckRollup": [
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-06T04:54:34Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/santorest/lab-12-aws-posture/actions/runs/37415855904/job/112114187271",
+      "name": "lint",
+      "startedAt": "2026-10-06T04:53:40Z",
+      "status": "COMPLETED",
+      "workflowName": "ci"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-06T04:54:20Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/santorest/lab-12-aws-posture/actions/runs/37415855904/job/112114187381",
+      "name": "unit",
+      "startedAt": "2026-10-06T04:53:40Z",
+      "status": "COMPLETED",
+      "workflowName": "ci"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-06T04:54:15Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/santorest/lab-12-aws-posture/actions/runs/37415855904/job/112114187128",
+      "name": "iac-scan",
+      "startedAt": "2026-10-06T04:53:40Z",
+      "status": "COMPLETED",
+      "workflowName": "ci"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-06T04:57:48Z",
+      "conclusion": "FAILURE",
+      "detailsUrl": "https://github.com/santorest/lab-12-aws-posture/actions/runs/37415855904/job/112114187317",
+      "name": "audit",
+      "startedAt": "2026-10-06T04:53:40Z",
+      "status": "COMPLETED",
+      "workflowName": "ci"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-06T04:53:45Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/santorest/lab-12-aws-posture/actions/runs/37415855904/job/112114187257",
+      "name": "secrets",
+      "startedAt": "2026-10-06T04:53:40Z",
+      "status": "COMPLETED",
+      "workflowName": "ci"
+    }
+  ],
+  "title": "Demo: the fix adds a new public bucket (expected to be blocked)",
+  "url": "https://github.com/santorest/lab-12-aws-posture/pull/2"
+}

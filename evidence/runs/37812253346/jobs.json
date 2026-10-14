@@ -1,0 +1,568 @@
+{
+  "jobs": [
+    {
+      "id": 113431822857,
+      "run_id": 37812253346,
+      "workflow_name": "ci",
+      "head_branch": "review-fixes",
+      "run_url": "https://api.github.com/repos/santorest/lab-12-aws-posture/actions/runs/37812253346",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU9JyEM8AAAAaaRBCCQ",
+      "head_sha": "a04ec64d026984e9100bbec7f6fe228d51c5840e",
+      "url": "https://api.github.com/repos/santorest/lab-12-aws-posture/actions/jobs/113431822857",
+      "html_url": "https://github.com/santorest/lab-12-aws-posture/actions/runs/37812253346/job/113431822857",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-08T16:53:06Z",
+      "started_at": "2026-10-08T16:53:09Z",
+      "completed_at": "2026-10-08T16:54:01Z",
+      "name": "lint",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-08T16:53:09Z",
+          "completed_at": "2026-10-08T16:53:10Z"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-08T16:53:10Z",
+          "completed_at": "2026-10-08T16:53:11Z"
+        },
+        {
+          "name": "Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-08T16:53:11Z",
+          "completed_at": "2026-10-08T16:53:11Z"
+        },
+        {
+          "name": "Run hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-08T16:53:11Z",
+          "completed_at": "2026-10-08T16:53:13Z"
+        },
+        {
+          "name": "Run terraform-linters/setup-tflint@6ffdbaa3be476b3431f7275c26966ef32ff60337",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-08T16:53:13Z",
+          "completed_at": "2026-10-08T16:53:14Z"
+        },
+        {
+          "name": "Run pip install -r requirements-dev.txt && pip install --no-deps -e .",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-08T16:53:14Z",
+          "completed_at": "2026-10-08T16:53:34Z"
+        },
+        {
+          "name": "Run terraform -chdir=terraform fmt -check -recursive",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-08T16:53:34Z",
+          "completed_at": "2026-10-08T16:53:34Z"
+        },
+        {
+          "name": "Run terraform -chdir=terraform init -backend=false -input=false && terraform -chdir=terraform validate",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-08T16:53:34Z",
+          "completed_at": "2026-10-08T16:53:47Z"
+        },
+        {
+          "name": "Run tflint --init && tflint --recursive --chdir=terraform --config=\"$PWD/.tflint.hcl\"",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-08T16:53:47Z",
+          "completed_at": "2026-10-08T16:53:50Z"
+        },
+        {
+          "name": "Run ruff check .",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-08T16:53:50Z",
+          "completed_at": "2026-10-08T16:53:50Z"
+        },
+        {
+          "name": "Run ruff format --check .",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-08T16:53:50Z",
+          "completed_at": "2026-10-08T16:53:50Z"
+        },
+        {
+          "name": "Run mypy",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-08T16:53:50Z",
+          "completed_at": "2026-10-08T16:53:58Z"
+        },
+        {
+          "name": "Run shellcheck scripts/*.sh",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-08T16:53:58Z",
+          "completed_at": "2026-10-08T16:53:58Z"
+        },
+        {
+          "name": "Run yamllint -s .",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-08T16:53:58Z",
+          "completed_at": "2026-10-08T16:53:58Z"
+        },
+        {
+          "name": "Post Run terraform-linters/setup-tflint@6ffdbaa3be476b3431f7275c26966ef32ff60337",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-10-08T16:53:58Z",
+          "completed_at": "2026-10-08T16:53:58Z"
+        },
+        {
+          "name": "Post Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-10-08T16:53:58Z",
+          "completed_at": "2026-10-08T16:53:58Z"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 28,
+          "started_at": "2026-10-08T16:53:58Z",
+          "completed_at": "2026-10-08T16:53:59Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 29,
+          "started_at": "2026-10-08T16:53:59Z",
+          "completed_at": "2026-10-08T16:53:59Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/santorest/lab-12-aws-posture/check-runs/113431822857",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000001328,
+      "runner_name": "GitHub Actions 1000001328",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 113431823015,
+      "run_id": 37812253346,
+      "workflow_name": "ci",
+      "head_branch": "review-fixes",
+      "run_url": "https://api.github.com/repos/santorest/lab-12-aws-posture/actions/runs/37812253346",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU9JyEM8AAAAaaRBCpw",
+      "head_sha": "a04ec64d026984e9100bbec7f6fe228d51c5840e",
+      "url": "https://api.github.com/repos/santorest/lab-12-aws-posture/actions/jobs/113431823015",
+      "html_url": "https://github.com/santorest/lab-12-aws-posture/actions/runs/37812253346/job/113431823015",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-08T16:53:06Z",
+      "started_at": "2026-10-08T16:53:08Z",
+      "completed_at": "2026-10-08T16:53:16Z",
+      "name": "secrets",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-08T16:53:09Z",
+          "completed_at": "2026-10-08T16:53:10Z"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-08T16:53:10Z",
+          "completed_at": "2026-10-08T16:53:11Z"
+        },
+        {
+          "name": "gitleaks (full history, pinned by digest)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-08T16:53:11Z",
+          "completed_at": "2026-10-08T16:53:14Z"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-08T16:53:14Z",
+          "completed_at": "2026-10-08T16:53:15Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-08T16:53:15Z",
+          "completed_at": "2026-10-08T16:53:15Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/santorest/lab-12-aws-posture/check-runs/113431823015",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000001330,
+      "runner_name": "GitHub Actions 1000001330",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 113431823106,
+      "run_id": 37812253346,
+      "workflow_name": "ci",
+      "head_branch": "review-fixes",
+      "run_url": "https://api.github.com/repos/santorest/lab-12-aws-posture/actions/runs/37812253346",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU9JyEM8AAAAaaRBDAg",
+      "head_sha": "a04ec64d026984e9100bbec7f6fe228d51c5840e",
+      "url": "https://api.github.com/repos/santorest/lab-12-aws-posture/actions/jobs/113431823106",
+      "html_url": "https://github.com/santorest/lab-12-aws-posture/actions/runs/37812253346/job/113431823106",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-08T16:53:06Z",
+      "started_at": "2026-10-08T16:53:09Z",
+      "completed_at": "2026-10-08T16:53:53Z",
+      "name": "unit",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-08T16:53:10Z",
+          "completed_at": "2026-10-08T16:53:11Z"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-08T16:53:11Z",
+          "completed_at": "2026-10-08T16:53:12Z"
+        },
+        {
+          "name": "Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-08T16:53:12Z",
+          "completed_at": "2026-10-08T16:53:12Z"
+        },
+        {
+          "name": "Run hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-08T16:53:12Z",
+          "completed_at": "2026-10-08T16:53:14Z"
+        },
+        {
+          "name": "Run pip install -r requirements-dev.txt && pip install --no-deps -e .",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-08T16:53:14Z",
+          "completed_at": "2026-10-08T16:53:30Z"
+        },
+        {
+          "name": "Run pytest --cov=postureck --cov-report=term-missing --cov-fail-under=90",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-08T16:53:30Z",
+          "completed_at": "2026-10-08T16:53:39Z"
+        },
+        {
+          "name": "Run terraform -chdir=terraform init -backend=false -input=false && terraform -chdir=terraform test",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-08T16:53:39Z",
+          "completed_at": "2026-10-08T16:53:49Z"
+        },
+        {
+          "name": "Post Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-08T16:53:49Z",
+          "completed_at": "2026-10-08T16:53:49Z"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-08T16:53:49Z",
+          "completed_at": "2026-10-08T16:53:49Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-08T16:53:49Z",
+          "completed_at": "2026-10-08T16:53:50Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/santorest/lab-12-aws-posture/check-runs/113431823106",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000001329,
+      "runner_name": "GitHub Actions 1000001329",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 113431823166,
+      "run_id": 37812253346,
+      "workflow_name": "ci",
+      "head_branch": "review-fixes",
+      "run_url": "https://api.github.com/repos/santorest/lab-12-aws-posture/actions/runs/37812253346",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU9JyEM8AAAAaaRBDPg",
+      "head_sha": "a04ec64d026984e9100bbec7f6fe228d51c5840e",
+      "url": "https://api.github.com/repos/santorest/lab-12-aws-posture/actions/jobs/113431823166",
+      "html_url": "https://github.com/santorest/lab-12-aws-posture/actions/runs/37812253346/job/113431823166",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-08T16:53:06Z",
+      "started_at": "2026-10-08T16:53:09Z",
+      "completed_at": "2026-10-08T16:58:06Z",
+      "name": "audit",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-08T16:53:09Z",
+          "completed_at": "2026-10-08T16:53:10Z"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-08T16:53:10Z",
+          "completed_at": "2026-10-08T16:53:11Z"
+        },
+        {
+          "name": "Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-08T16:53:11Z",
+          "completed_at": "2026-10-08T16:53:11Z"
+        },
+        {
+          "name": "Run hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-08T16:53:11Z",
+          "completed_at": "2026-10-08T16:53:13Z"
+        },
+        {
+          "name": "Run pip install -r requirements-dev.txt && pip install --no-deps -e .",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-08T16:53:13Z",
+          "completed_at": "2026-10-08T16:53:28Z"
+        },
+        {
+          "name": "LocalStack -> vulnerable -> audit -> remediated -> audit -> destroy -> report -> gate",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-08T16:53:28Z",
+          "completed_at": "2026-10-08T16:58:02Z"
+        },
+        {
+          "name": "Summary",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-08T16:58:02Z",
+          "completed_at": "2026-10-08T16:58:02Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-08T16:58:02Z",
+          "completed_at": "2026-10-08T16:58:04Z"
+        },
+        {
+          "name": "Post Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-08T16:58:04Z",
+          "completed_at": "2026-10-08T16:58:04Z"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-08T16:58:04Z",
+          "completed_at": "2026-10-08T16:58:04Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-08T16:58:04Z",
+          "completed_at": "2026-10-08T16:58:04Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/santorest/lab-12-aws-posture/check-runs/113431823166",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000001331,
+      "runner_name": "GitHub Actions 1000001331",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 113431823193,
+      "run_id": 37812253346,
+      "workflow_name": "ci",
+      "head_branch": "review-fixes",
+      "run_url": "https://api.github.com/repos/santorest/lab-12-aws-posture/actions/runs/37812253346",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU9JyEM8AAAAaaRBDWQ",
+      "head_sha": "a04ec64d026984e9100bbec7f6fe228d51c5840e",
+      "url": "https://api.github.com/repos/santorest/lab-12-aws-posture/actions/jobs/113431823193",
+      "html_url": "https://github.com/santorest/lab-12-aws-posture/actions/runs/37812253346/job/113431823193",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-08T16:53:06Z",
+      "started_at": "2026-10-08T16:53:09Z",
+      "completed_at": "2026-10-08T16:53:46Z",
+      "name": "iac-scan",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-08T16:53:10Z",
+          "completed_at": "2026-10-08T16:53:10Z"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-08T16:53:10Z",
+          "completed_at": "2026-10-08T16:53:11Z"
+        },
+        {
+          "name": "Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-08T16:53:11Z",
+          "completed_at": "2026-10-08T16:53:11Z"
+        },
+        {
+          "name": "Run pip install checkov==3.3.23",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-08T16:53:11Z",
+          "completed_at": "2026-10-08T16:53:30Z"
+        },
+        {
+          "name": "Checkov on both postures (for comparison; it does not gate the planted flaws)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-08T16:53:30Z",
+          "completed_at": "2026-10-08T16:53:43Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-08T16:53:43Z",
+          "completed_at": "2026-10-08T16:53:44Z"
+        },
+        {
+          "name": "Post Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-08T16:53:44Z",
+          "completed_at": "2026-10-08T16:53:44Z"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-08T16:53:44Z",
+          "completed_at": "2026-10-08T16:53:44Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-08T16:53:44Z",
+          "completed_at": "2026-10-08T16:53:44Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/santorest/lab-12-aws-posture/check-runs/113431823193",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000001332,
+      "runner_name": "GitHub Actions 1000001332",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

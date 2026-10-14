@@ -8,7 +8,6 @@ date: "2026-10-06"
 time_to_reproduce: "About 10 minutes: one CI run (fork, enable Actions, run CI); the audit job takes 3–5 minutes"
 skills: [AWS, LocalStack, Terraform, Prowler, Checkov, Python, boto3, GitHub Actions]
 frameworks: [CIS AWS Foundations Benchmark v7.0, CIS Controls v8 (3.3, 3.11, 4.4, 4.5, 5.4, 6.5, 13.6), MITRE ATT&CK (T1530, T1078.004, T1562.007)]
-repo: "https://github.com/santorest/lab-12-aws-posture"
 bundle: "Published on the portfolio site with its SHA-256 checksum"
 ---
 
@@ -109,7 +108,7 @@ It runs on every pull request, on pushes to `main`, weekly and on demand.
 
 ## 7. Results
 
-From [run 37812253346](https://github.com/santorest/lab-12-aws-posture/actions/runs/37812253346) (2026-10-08), the final code after the review fixes; the first green run, [37414269426](https://github.com/santorest/lab-12-aws-posture/actions/runs/37414269426) on `main` (2026-10-06), gave the same numbers. `docs/example-report.html`
+From run 37812253346 (2026-10-08, archived in `evidence/runs/37812253346/`), the final code after the review fixes; the first green run, 37414269426 (2026-10-06, archived in `evidence/runs/37414269426/`) on `main` (2026-10-06), gave the same numbers. `docs/example-report.html`
 is its report. LocalStack 4.14.0 (community edition, pinned by digest), Prowler 5.44.0, Terraform 1.16.5 with the AWS
 provider 6.67.0, CIS AWS Foundations v7.0 as Prowler maps it.
 
@@ -135,7 +134,7 @@ provider 6.67.0, CIS AWS Foundations v7.0 as Prowler maps it.
   a destroy); the whole pipeline 4–6 minutes.
 
 **How it got there.** The first complete cycle
-([run 37413720116](https://github.com/santorest/lab-12-aws-posture/actions/runs/37413720116)) detected 6/6 but fixed 5/6, and found one regression. The default security
+(run 37413720116 (2026-10-06, archived in `evidence/runs/37413720116/`)) detected 6/6 but fixed 5/6, and found one regression. The default security
 group kept its rules after the "fix": Terraform treats empty rule blocks as "not specified", so nothing was removed —
 the rules are now written as an explicit empty list. And the regression was real: the IAM role the fix created for
 VPC flow logs could be assumed on behalf of any account (no `aws:SourceAccount` condition). The fix had introduced a
@@ -148,8 +147,8 @@ in either of them: the address range comes from a conditional value it does not 
 
 | PR | Change | What happened |
 |---|---|---|
-| [#1](https://github.com/santorest/lab-12-aws-posture/pull/1) | SSH and RDP open to the internet again in the remediated posture | detected 6/6 but fixed 5/6: the gate failed with "planted flaw still failing after fix: P6a" |
-| [#2](https://github.com/santorest/lab-12-aws-posture/pull/2) | the "fix" also creates a new public bucket, `acme-exports` | every planted item was still fixed (6/6), but the gate failed on 12 regressions on the new bucket, among them public access (critical) and Block Public Access off (high) |
+| #1 (archived in `evidence/prs/1/`) | SSH and RDP open to the internet again in the remediated posture | detected 6/6 but fixed 5/6: the gate failed with "planted flaw still failing after fix: P6a" |
+| #2 (archived in `evidence/prs/2/`) | the "fix" also creates a new public bucket, `acme-exports` | every planted item was still fixed (6/6), but the gate failed on 12 regressions on the new bucket, among them public access (critical) and Block Public Access off (high) |
 
 ## 8. Lessons
 

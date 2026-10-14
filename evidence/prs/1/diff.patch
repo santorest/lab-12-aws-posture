@@ -1,0 +1,13 @@
+diff --git a/terraform/envs/remediated.tfvars b/terraform/envs/remediated.tfvars
+index 98a051b..aa07420 100644
+--- a/terraform/envs/remediated.tfvars
++++ b/terraform/envs/remediated.tfvars
+@@ -5,7 +5,7 @@ s3_data_no_versioning_tls = false
+ iam_admin_policy          = false
+ iam_user_keys_no_mfa      = false
+ iam_weak_password_policy  = false
+-sg_admin_open             = false
++sg_admin_open             = true
+ sg_default_open           = false
+ kms_no_rotation           = false
+ vpc_no_flow_logs          = false
