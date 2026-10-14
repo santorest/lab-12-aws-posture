@@ -8,7 +8,6 @@ date: "2026-10-06"
 time_to_reproduce: "Unos 10 minutos: una ejecución de CI (fork, habilitar Actions, ejecutar CI); el trabajo de auditoría tarda de 3 a 5 minutos"
 skills: [AWS, LocalStack, Terraform, Prowler, Checkov, Python, boto3, GitHub Actions]
 frameworks: [CIS AWS Foundations Benchmark v7.0, CIS Controls v8 (3.3, 3.11, 4.4, 4.5, 5.4, 6.5, 13.6), MITRE ATT&CK (T1530, T1078.004, T1562.007)]
-repo: "https://github.com/santorest/lab-12-aws-posture"
 bundle: "Publicado en el sitio del portafolio con su suma SHA-256"
 ---
 
@@ -117,7 +116,7 @@ Se ejecuta en cada pull request, en cada push a `main`, semanalmente y a demanda
 
 ## 7. Resultados
 
-De la [ejecución 37812253346](https://github.com/santorest/lab-12-aws-posture/actions/runs/37812253346) (2026-10-08), el código final tras las correcciones de la revisión; la primera en verde, [37414269426](https://github.com/santorest/lab-12-aws-posture/actions/runs/37414269426) en `main` (2026-10-06), dio las mismas cifras.
+De la ejecución 37812253346 (2026-10-08, archivada en `evidence/runs/37812253346/`), el código final tras las correcciones de la revisión; la primera en verde, 37414269426 (2026-10-06, archivada en `evidence/runs/37414269426/`) en `main` (2026-10-06), dio las mismas cifras.
 `docs/example-report.html` es su informe. LocalStack 4.14.0 (edición comunitaria, fijada por digest), Prowler 5.44.0,
 Terraform 1.16.5 con el proveedor de AWS 6.67.0, CIS AWS Foundations v7.0 según el mapeo de Prowler.
 
@@ -143,7 +142,7 @@ Terraform 1.16.5 con el proveedor de AWS 6.67.0, CIS AWS Foundations v7.0 según
 - **Tiempo**: el paso de auditoría tarda unos 3 minutos (dos aplicaciones de Terraform, dos escaneos de Prowler de unos
   30 segundos, un destroy); el pipeline completo, de 4 a 6 minutos.
 
-**Cómo se llegó ahí.** El primer ciclo completo ([ejecución 37413720116](https://github.com/santorest/lab-12-aws-posture/actions/runs/37413720116)) detectó 6/6 pero
+**Cómo se llegó ahí.** El primer ciclo completo (ejecución 37413720116 (2026-10-06, archivada en `evidence/runs/37413720116/`)) detectó 6/6 pero
 corrigió 5/6 y encontró una regresión. El grupo de seguridad por defecto conservó sus reglas después de la
 "corrección": Terraform trata los bloques de reglas vacíos como "no especificado", así que no se eliminó nada — ahora
 las reglas se escriben como una lista vacía explícita. Y la regresión era real: el rol de IAM que la corrección creó
@@ -159,8 +158,8 @@ auditoría en vivo sí.
 
 | PR | Cambio | Qué pasó |
 |---|---|---|
-| [#1](https://github.com/santorest/lab-12-aws-posture/pull/1) | SSH y RDP abiertos a internet otra vez en la postura corregida | detectados 6/6 pero corregidos 5/6: la compuerta falló con "planted flaw still failing after fix: P6a" |
-| [#2](https://github.com/santorest/lab-12-aws-posture/pull/2) | la "corrección" crea además un bucket público nuevo, `acme-exports` | todos los elementos sembrados siguieron corregidos (6/6), pero la compuerta falló por 12 regresiones en el bucket nuevo, entre ellas acceso público (crítica) y Block Public Access desactivado (alta) |
+| #1 (archivado en `evidence/prs/1/`) | SSH y RDP abiertos a internet otra vez en la postura corregida | detectados 6/6 pero corregidos 5/6: la compuerta falló con "planted flaw still failing after fix: P6a" |
+| #2 (archivado en `evidence/prs/2/`) | la "corrección" crea además un bucket público nuevo, `acme-exports` | todos los elementos sembrados siguieron corregidos (6/6), pero la compuerta falló por 12 regresiones en el bucket nuevo, entre ellas acceso público (crítica) y Block Public Access desactivado (alta) |
 
 ## 8. Lecciones
 

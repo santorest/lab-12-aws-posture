@@ -1,0 +1,26 @@
+{
+  "id": 37413720116,
+  "name": "ci",
+  "head_sha": "519faaa0b4f7aaf8393d3dcf0fcb90701f740768",
+  "head_branch": "main",
+  "event": "push",
+  "status": "completed",
+  "conclusion": "failure",
+  "created_at": "2026-10-06T04:26:30Z",
+  "run_started_at": "2026-10-06T04:26:30Z",
+  "updated_at": "2026-10-06T04:31:13Z",
+  "run_attempt": 1,
+  "html_url": "https://github.com/santorest/lab-12-aws-posture/actions/runs/37413720116",
+  "artifacts": [
+    {
+      "name": "checkov",
+      "size_in_bytes": 9948,
+      "expired": false
+    },
+    {
+      "name": "audit-results",
+      "size_in_bytes": 764309,
+      "expired": false
+    }
+  ]
+}
